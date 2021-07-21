@@ -29,6 +29,10 @@ public class GridManager : MonoBehaviour
             }
         }
         Destroy(referenceTile);
+
+        var gridWidth = cols * tileSize;
+        var gridHeight = rows * tileSize;
+        transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
     }
 
     // Update is called once per frame
