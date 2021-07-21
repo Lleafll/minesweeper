@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 enum Tile
@@ -14,26 +15,26 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Object defaultReference;
     [SerializeField] private Object mineReference;
     [SerializeField] private float tileSize = 1;
+    [SerializeField] private int mineCount = 10;
     private List<Tile> tiles;
 
     void Start()
     {
-        tiles = GenerateTiles(rows * columns);
+        tiles = GenerateTiles(rows * columns, mineCount);
         GenerateGrid();
     }
 
-    private static List<Tile> GenerateTiles(int length)
+    private static List<Tile> GenerateTiles(int length, int mineCount)
     {
-        var tiles = new List<Tile>();
-        for (int i = 0; i < length; i++)
+        var tiles = Enumerable.Repeat(Tile.Default, length).ToList();
+        var minesRemaining = mineCount;
+        while (minesRemaining != 0)
         {
-            if (i % 2 == 0)
+            var index = Random.Range(0, length);
+            if (tiles[index] != Tile.Mine)
             {
-                tiles.Add(Tile.Default);
-            }
-            else
-            {
-                tiles.Add(Tile.Mine);
+                tiles[index] = Tile.Mine;
+                --minesRemaining;
             }
         }
         return tiles;
