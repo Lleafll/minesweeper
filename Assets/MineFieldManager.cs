@@ -34,7 +34,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private int mineCount = 10;
     private Tile[,] tiles;
     private GameObject[,] fog;
-    bool gameOver = false;
+    private bool gameOver = false;
 
     void Start()
     {
