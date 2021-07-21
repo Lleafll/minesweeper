@@ -32,15 +32,16 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private float tileSize = 1;
     [SerializeField] private int mineCount = 10;
     private Tile[,] tiles;
+    private GameObject[,] fog;
 
     void Start()
     {
         tiles = GenerateTiles(rows, columns, mineCount);
         GenerateGrid();
-        GenerateFog();
-        var gridWidth = columns * tileSize;
-        var gridHeight = rows * tileSize;
-        transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
+        fog = GenerateFog();
+        //var gridWidth = columns * tileSize;
+        //var gridHeight = rows * tileSize;
+        //transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
     }
 
     private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
@@ -112,8 +113,9 @@ public class MineFieldManager : MonoBehaviour
         }
     }
 
-    private void GenerateFog()
+    private GameObject[,] GenerateFog()
     {
+        var tiles = new GameObject[rows, columns];
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
@@ -122,8 +124,10 @@ public class MineFieldManager : MonoBehaviour
                 var posX = column * tileSize;
                 var posY = row * -tileSize;
                 tile.transform.position = new Vector3(posX, posY, -1);
+                tiles[row, column] = tile;
             }
         }
+        return tiles;
     }
 
     private GameObject InstantiateTile(Tile tile)
@@ -157,5 +161,21 @@ public class MineFieldManager : MonoBehaviour
     private Tile tileAt(int row, int column)
     {
         return tiles[row, column];
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var row = (int)(mousePosition.y / -tileSize + tileSize / 2);
+            var column = (int)(mousePosition.x / tileSize + tileSize / 2);
+            if (row < 0 || column < 0 || row >= rows || column >= columns)
+            {
+                return;
+            }
+            fog[row, column].SetActive(false);
+        }
     }
 }
