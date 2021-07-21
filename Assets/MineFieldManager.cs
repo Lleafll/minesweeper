@@ -34,6 +34,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private int mineCount = 10;
     private Tile[,] tiles;
     private GameObject[,] fog;
+    bool gameOver = false;
 
     void Start()
     {
@@ -164,6 +165,10 @@ public class MineFieldManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameOver)
+        {
+            return;
+        }
         if (Input.GetMouseButton(0))
         {
             var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -174,7 +179,12 @@ public class MineFieldManager : MonoBehaviour
                 return;
             }
             clearFog(row, column);
-            checkIfMineHit(row, column);
+            gameOver = checkIfMineHit(row, column);
+            if (gameOver)
+            {
+                return;
+            }
+            clearAutomatically();
         }
     }
 
@@ -183,12 +193,51 @@ public class MineFieldManager : MonoBehaviour
         fog[row, column].SetActive(false);
     }
 
-    void checkIfMineHit(int row, int column)
+    bool checkIfMineHit(int row, int column)
     {
         if (tiles[row, column] == Tile.Mine)
         {
             var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
             gameOverText.enabled = true;
+            return true;
+        }
+        return false;
+    }
+
+    void clearAutomatically()
+    {
+        var noChanges = true;
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (!fog[row, column].activeSelf && tiles[row, column] == Tile.Empty)
+                {
+                    for (int x = row - 1; x <= row + 1; x++)
+                    {
+                        if (x < 0 || x >= rows)
+                        {
+                            continue;
+                        }
+                        for (int y = column - 1; y <= column + 1; y++)
+                        {
+                            if (y < 0 || y >= columns)
+                            {
+                                continue;
+                            }
+                            if (fog[x, y].activeSelf)
+                            {
+                                fog[x, y].SetActive(false);
+                                noChanges = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!noChanges)
+        {
+            clearAutomatically();
         }
     }
 }
