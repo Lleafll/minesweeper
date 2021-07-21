@@ -41,6 +41,9 @@ public class MineFieldManager : MonoBehaviour
         tiles = GenerateTiles(rows, columns, mineCount);
         GenerateGrid();
         fog = GenerateFog();
+        var gridWidth = columns * tileSize;
+        var gridHeight = rows * tileSize;
+        Camera.main.transform.Translate(new Vector3(gridWidth / 2 - tileSize / 2, -gridHeight / 2 + tileSize / 2, 0));
     }
 
     private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
