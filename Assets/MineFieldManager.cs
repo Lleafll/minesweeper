@@ -14,7 +14,7 @@ enum Tile
     Mine
 }
 
-public class GridManager : MonoBehaviour
+public class MineFieldManager : MonoBehaviour
 {
     [SerializeField] private int rows = 5;
     [SerializeField] private int columns = 8;
@@ -37,6 +37,10 @@ public class GridManager : MonoBehaviour
     {
         tiles = GenerateTiles(rows, columns, mineCount);
         GenerateGrid();
+        GenerateFog();
+        var gridWidth = columns * tileSize;
+        var gridHeight = rows * tileSize;
+        transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
     }
 
     private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
@@ -106,9 +110,20 @@ public class GridManager : MonoBehaviour
                 tile.transform.position = new Vector2(posX, posY);
             }
         }
-        var gridWidth = columns * tileSize;
-        var gridHeight = rows * tileSize;
-        transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
+    }
+
+    private void GenerateFog()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                var tile = Instantiate(defaultReference, transform) as GameObject;
+                var posX = column * tileSize;
+                var posY = row * -tileSize;
+                tile.transform.position = new Vector3(posX, posY, -1);
+            }
+        }
     }
 
     private GameObject InstantiateTile(Tile tile)
