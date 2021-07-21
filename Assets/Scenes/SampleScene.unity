@@ -264,6 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rows: 8
-  cols: 8
-  reference: {fileID: 1292610183469028623, guid: dc015999c691b754594bad1ce8ded0b8, type: 3}
+  columns: 8
+  defaultReference: {fileID: 1292610183469028623, guid: dc015999c691b754594bad1ce8ded0b8, type: 3}
+  mineReference: {fileID: 3371629431940761664, guid: 9539edc4df29e5a4b91d6f9481d3983c, type: 3}
   tileSize: 1
