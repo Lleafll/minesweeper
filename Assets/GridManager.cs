@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,24 +15,33 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Object mineReference;
     [SerializeField] private float tileSize = 1;
     [SerializeField] private int mineCount = 10;
-    private List<Tile> tiles;
+    private Tile[,] tiles;
 
     void Start()
     {
-        tiles = GenerateTiles(rows * columns, mineCount);
+        tiles = GenerateTiles(rows, columns, mineCount);
         GenerateGrid();
     }
 
-    private static List<Tile> GenerateTiles(int length, int mineCount)
+    private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
     {
-        var tiles = Enumerable.Repeat(Tile.Default, length).ToList();
+        var tiles = new Tile[rows, columns];
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                tiles[row, column] = Tile.Default;
+            }
+        }
         var minesRemaining = mineCount;
         while (minesRemaining != 0)
         {
-            var index = Random.Range(0, length);
-            if (tiles[index] != Tile.Mine)
+            var index = Random.Range(0, rows * columns);
+            var row = index / columns;
+            var column = index % columns;
+            if (tiles[row, column] != Tile.Mine)
             {
-                tiles[index] = Tile.Mine;
+                tiles[row, column] = Tile.Mine;
                 --minesRemaining;
             }
         }
@@ -64,6 +72,6 @@ public class GridManager : MonoBehaviour
 
     private Tile tileAt(int row, int column)
     {
-        return tiles[columns * row + column];
+        return tiles[row, column];
     }
 }
