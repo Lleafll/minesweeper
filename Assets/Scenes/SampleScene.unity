@@ -263,9 +263,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656bd8626b4dfa942a3986dfdb8e2335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 5
+  rows: 6
   columns: 8
   defaultReference: {fileID: 1292610183469028623, guid: dc015999c691b754594bad1ce8ded0b8, type: 3}
+  emptyReference: {fileID: 4366485065746032908, guid: 4054fe87ebfe78d44b9bed98e3e7dc8f, type: 3}
   mineReference: {fileID: 3371629431940761664, guid: 9539edc4df29e5a4b91d6f9481d3983c, type: 3}
+  Proximity1Reference: {fileID: 5164067387948755594, guid: 98f1e235da7be624e8e2c631f8acdc5d, type: 3}
+  Proximity2Reference: {fileID: 7470966813886434772, guid: cc725a5a620fd1b4db9edb91d626def1, type: 3}
+  Proximity3Reference: {fileID: 5068500423733970730, guid: e7376720e44432d4a8da7e900cb43b60, type: 3}
+  Proximity4Reference: {fileID: 2733357925330721662, guid: 17492bec6bb21f54796d9bc4eafcfb26, type: 3}
+  Proximity5Reference: {fileID: 3267437770568844135, guid: 29d054a51033781488e644a1baf82b59, type: 3}
+  Proximity6Reference: {fileID: 9078472041221001199, guid: 100b99c67efde494a8cfb18074558987, type: 3}
+  Proximity7Reference: {fileID: 272101563563867381, guid: b020f53f734f83249927e8a1e6a6f3a5, type: 3}
+  Proximity8Reference: {fileID: 203720836678808057, guid: be7fd6a0f6bd020498744579fe30c123, type: 3}
   tileSize: 1
   mineCount: 10
