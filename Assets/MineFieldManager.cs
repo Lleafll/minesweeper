@@ -22,6 +22,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private Object defaultReference;
     [SerializeField] private Object emptyReference;
     [SerializeField] private Object mineReference;
+    [SerializeField] private Object flagReference;
     [SerializeField] private Object Proximity1Reference;
     [SerializeField] private Object Proximity2Reference;
     [SerializeField] private Object Proximity3Reference;
@@ -34,6 +35,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private int mineCount = 10;
     private Tile[,] tiles;
     private GameObject[,] fog;
+    private GameObject[,] flags;
     private bool gameOver = false;
 
     void Start()
@@ -42,6 +44,7 @@ public class MineFieldManager : MonoBehaviour
         tiles = GenerateTiles(rows, columns, mineCount);
         GenerateGrid();
         fog = GenerateFog();
+        flags = GenerateFlags();
         var gridWidth = columns * tileSize;
         var gridHeight = rows * tileSize;
         Camera.main.transform.Translate(new Vector3(gridWidth / 2 - tileSize / 2, -gridHeight / 2 + tileSize / 2, 0));
@@ -133,6 +136,24 @@ public class MineFieldManager : MonoBehaviour
         return tiles;
     }
 
+    private GameObject[,] GenerateFlags()
+    {
+        var tiles = new GameObject[rows, columns];
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                var tile = Instantiate(flagReference, transform) as GameObject;
+                var posX = column * tileSize;
+                var posY = row * -tileSize;
+                tile.transform.position = new Vector3(posX, posY, -2);
+                tile.SetActive(false);
+                tiles[row, column] = tile;
+            }
+        }
+        return tiles;
+    }
+
     private GameObject InstantiateTile(Tile tile)
     {
         switch (tile)
@@ -173,11 +194,9 @@ public class MineFieldManager : MonoBehaviour
         {
             return;
         }
-        if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0))
         {
-            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var row = (int)(mousePosition.y / -tileSize + tileSize / 2);
-            var column = (int)(mousePosition.x / tileSize + tileSize / 2);
+            var (row, column) = getClickedRowAndColumn();
             if (row < 0 || column < 0 || row >= rows || column >= columns)
             {
                 return;
@@ -191,6 +210,22 @@ public class MineFieldManager : MonoBehaviour
             clearAutomatically();
             gameOver = checkIfWon();
         }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            var (row, column) = getClickedRowAndColumn();
+            if (fog[row, column].activeSelf)
+            {
+                flags[row, column].SetActive(!flags[row, column].activeSelf);
+            }
+        }
+    }
+
+    private (int, int) getClickedRowAndColumn()
+    {
+        var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var row = (int)(mousePosition.y / -tileSize + tileSize / 2);
+        var column = (int)(mousePosition.x / tileSize + tileSize / 2);
+        return (row, column);
     }
 
     private void clearFog(int row, int column)

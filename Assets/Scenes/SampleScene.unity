@@ -281,6 +281,7 @@ MonoBehaviour:
   defaultReference: {fileID: 1292610183469028623, guid: dc015999c691b754594bad1ce8ded0b8, type: 3}
   emptyReference: {fileID: 4366485065746032908, guid: 4054fe87ebfe78d44b9bed98e3e7dc8f, type: 3}
   mineReference: {fileID: 3371629431940761664, guid: 9539edc4df29e5a4b91d6f9481d3983c, type: 3}
+  flagReference: {fileID: 3087362985438816582, guid: 60d58a6bd5988844eafcb1d20141e84d, type: 3}
   Proximity1Reference: {fileID: 5164067387948755594, guid: 98f1e235da7be624e8e2c631f8acdc5d, type: 3}
   Proximity2Reference: {fileID: 7470966813886434772, guid: cc725a5a620fd1b4db9edb91d626def1, type: 3}
   Proximity3Reference: {fileID: 5068500423733970730, guid: e7376720e44432d4a8da7e900cb43b60, type: 3}
