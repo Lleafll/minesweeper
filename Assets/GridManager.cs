@@ -1,15 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum Tile
+{
+    Default,
+    Mine
+}
+
 public class GridManager : MonoBehaviour
 {
-    private enum Tile
-    {
-        Default,
-        Mine
-    }
-
     [SerializeField] private int rows = 5;
     [SerializeField] private int columns = 8;
     [SerializeField] private Object defaultReference;
