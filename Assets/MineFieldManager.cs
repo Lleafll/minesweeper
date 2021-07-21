@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 enum Tile
 {
@@ -39,9 +40,6 @@ public class MineFieldManager : MonoBehaviour
         tiles = GenerateTiles(rows, columns, mineCount);
         GenerateGrid();
         fog = GenerateFog();
-        //var gridWidth = columns * tileSize;
-        //var gridHeight = rows * tileSize;
-        //transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
     }
 
     private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
@@ -175,7 +173,22 @@ public class MineFieldManager : MonoBehaviour
             {
                 return;
             }
-            fog[row, column].SetActive(false);
+            clearFog(row, column);
+            checkIfMineHit(row, column);
+        }
+    }
+
+    void clearFog(int row, int column)
+    {
+        fog[row, column].SetActive(false);
+    }
+
+    void checkIfMineHit(int row, int column)
+    {
+        if (tiles[row, column] == Tile.Mine)
+        {
+            var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
+            gameOverText.enabled = true;
         }
     }
 }
