@@ -277,4 +277,4 @@ MonoBehaviour:
   Proximity7Reference: {fileID: 272101563563867381, guid: b020f53f734f83249927e8a1e6a6f3a5, type: 3}
   Proximity8Reference: {fileID: 203720836678808057, guid: be7fd6a0f6bd020498744579fe30c123, type: 3}
   tileSize: 1
-  mineCount: 10
+  mineCount: 7
