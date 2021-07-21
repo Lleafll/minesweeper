@@ -15,5 +15,9 @@ public class CameraMouseWheelZoom : MonoBehaviour
     void Update()
     {
         zoomCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * scrollSpeed;
+        if (zoomCamera.orthographicSize < 1)
+        {
+            zoomCamera.orthographicSize = 1;
+        }
     }
 }
