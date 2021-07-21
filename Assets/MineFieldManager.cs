@@ -188,15 +188,16 @@ public class MineFieldManager : MonoBehaviour
                 return;
             }
             clearAutomatically();
+            gameOver = checkIfWon();
         }
     }
 
-    void clearFog(int row, int column)
+    private void clearFog(int row, int column)
     {
         fog[row, column].SetActive(false);
     }
 
-    bool checkIfMineHit(int row, int column)
+    private bool checkIfMineHit(int row, int column)
     {
         if (tiles[row, column] == Tile.Mine)
         {
@@ -207,7 +208,7 @@ public class MineFieldManager : MonoBehaviour
         return false;
     }
 
-    void clearAutomatically()
+    private void clearAutomatically()
     {
         var noChanges = true;
         for (int row = 0; row < rows; row++)
@@ -242,5 +243,26 @@ public class MineFieldManager : MonoBehaviour
         {
             clearAutomatically();
         }
+    }
+
+    private bool checkIfWon()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (tiles[row, column] == Tile.Mine)
+                {
+                    continue;
+                }
+                if (fog[row, column].activeSelf)
+                {
+                    return false;
+                }
+            }
+        }
+        var gameOverText = GameObject.Find("GameWonScreen").GetComponent<Text>();
+        gameOverText.enabled = true;
+        return true;
     }
 }
