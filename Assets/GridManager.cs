@@ -7,9 +7,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int rows = 5;
     [SerializeField] private int cols = 8;
     [SerializeField] private Object reference;
-    private float tileSize = 1;
+    [SerializeField] private float tileSize = 1;
 
-    // Start is called before the first frame update
     void Start()
     {
         GenerateGrid();
@@ -33,11 +32,5 @@ public class GridManager : MonoBehaviour
         var gridWidth = cols * tileSize;
         var gridHeight = rows * tileSize;
         transform.position = new Vector2(-gridWidth / 2 + tileSize / 2, gridHeight / 2 - tileSize / 2);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

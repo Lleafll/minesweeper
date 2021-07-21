@@ -250,5 +250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rows: 8
-  cols: 80
+  cols: 8
   reference: {fileID: 1292610183469028623, guid: dc015999c691b754594bad1ce8ded0b8, type: 3}
+  tileSize: 1
