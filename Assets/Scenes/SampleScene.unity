@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 603442755}
   - component: {fileID: 603442756}
   m_Layer: 0
-  m_Name: GridHolder
+  m_Name: MineField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
