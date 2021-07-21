@@ -38,6 +38,7 @@ public class MineFieldManager : MonoBehaviour
 
     void Start()
     {
+        mineCount = System.Math.Min(mineCount, rows * columns / 2);
         tiles = GenerateTiles(rows, columns, mineCount);
         GenerateGrid();
         fog = GenerateFog();
