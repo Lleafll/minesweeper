@@ -39,6 +39,7 @@ public class MineFieldManager : MonoBehaviour
     private GameObject[,] flags;
     private bool gameOver = false;
     private bool firstHit = true;
+    private bool flagButtonMode = true;
 
     void Start()
     {
@@ -76,6 +77,11 @@ public class MineFieldManager : MonoBehaviour
     public void SetColumns(string value)
     {
         columns = int.Parse(value);
+    }
+
+    public void setFlagButtonMode(bool value)
+    {
+        flagButtonMode = value;
     }
 
     private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
@@ -259,7 +265,13 @@ public class MineFieldManager : MonoBehaviour
                 }
                 else
                 {
-                    flags[row, column].SetActive(!flags[row, column].activeSelf);
+                    if (flagButtonMode)
+                    {
+                        flags[row, column].SetActive(!flags[row, column].activeSelf);
+                    } else
+                    {
+                        clearFog(row, column);
+                    }
                 }
             }
             else
