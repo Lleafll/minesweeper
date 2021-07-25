@@ -17,8 +17,8 @@ enum Tile
 
 public class MineFieldManager : MonoBehaviour
 {
-    [SerializeField] private int rows = 5;
-    [SerializeField] private int columns = 8;
+    [SerializeField] private int rows = 10;
+    [SerializeField] private int columns = 10;
     [SerializeField] private Object defaultReference;
     [SerializeField] private Object emptyReference;
     [SerializeField] private Object mineReference;
@@ -38,6 +38,7 @@ public class MineFieldManager : MonoBehaviour
     private GameObject[,] fog;
     private GameObject[,] flags;
     private bool gameOver = false;
+    private bool firstHit = true;
 
     void Start()
     {
@@ -59,6 +60,7 @@ public class MineFieldManager : MonoBehaviour
         gameOverText.enabled = false;
         var gameWonText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameWonText.enabled = false;
+        firstHit = true;
     }
 
     public void SetMineCount(string value)
@@ -248,8 +250,22 @@ public class MineFieldManager : MonoBehaviour
             {
                 return;
             }
-            clearFog(row, column);
-            gameOver = checkIfMineHit(row, column);
+            else if (IsHiddenByFog(row, column))
+            {
+                if (firstHit)
+                {
+                    gameOver = clearFog(row, column);
+                    firstHit = false;
+                }
+                else
+                {
+                    flags[row, column].SetActive(!flags[row, column].activeSelf);
+                }
+            }
+            else
+            {
+                gameOver = clearAround(row, column);
+            }
             if (gameOver)
             {
                 return;
@@ -257,14 +273,11 @@ public class MineFieldManager : MonoBehaviour
             clearAutomatically();
             gameOver = checkIfWon();
         }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            var (row, column) = getClickedRowAndColumn();
-            if (fog[row, column].activeSelf)
-            {
-                flags[row, column].SetActive(!flags[row, column].activeSelf);
-            }
-        }
+    }
+
+    private bool IsHiddenByFog(int row, int column)
+    {
+        return fog[row, column].activeSelf;
     }
 
     private (int, int) getClickedRowAndColumn()
@@ -275,9 +288,43 @@ public class MineFieldManager : MonoBehaviour
         return (row, column);
     }
 
-    private void clearFog(int row, int column)
+    private bool clearAround(int row, int column)
+    {
+        bool mineHit = false;
+        for (int x = row - 1; x <= row + 1; x++)
+        {
+            if (x < 0 || x >= rows)
+            {
+                continue;
+            }
+            for (int y = column - 1; y <= column + 1; y++)
+            {
+                if (y < 0 || y >= columns)
+                {
+                    continue;
+                }
+                if (!IsProtectedByFlag(x, y) && IsHiddenByFog(x, y))
+                {
+                    var mineUnderFog = clearFog(x, y);
+                    if (mineUnderFog)
+                    {
+                        mineHit = true;
+                    }
+                }
+            }
+        }
+        return mineHit;
+    }
+
+    private bool IsProtectedByFlag(int row, int column)
+    {
+        return flags[row, column].activeSelf;
+    }
+
+    private bool clearFog(int row, int column)
     {
         fog[row, column].SetActive(false);
+        return checkIfMineHit(row, column);
     }
 
     private bool checkIfMineHit(int row, int column)
@@ -298,7 +345,7 @@ public class MineFieldManager : MonoBehaviour
         {
             for (int column = 0; column < columns; column++)
             {
-                if (!fog[row, column].activeSelf && tiles[row, column] == Tile.Empty)
+                if (!IsHiddenByFog(row, column) && tiles[row, column] == Tile.Empty)
                 {
                     for (int x = row - 1; x <= row + 1; x++)
                     {
@@ -312,9 +359,9 @@ public class MineFieldManager : MonoBehaviour
                             {
                                 continue;
                             }
-                            if (fog[x, y].activeSelf)
+                            if (IsHiddenByFog(x, y))
                             {
-                                fog[x, y].SetActive(false);
+                                clearFog(x, y);
                                 noChanges = false;
                             }
                         }
@@ -338,7 +385,7 @@ public class MineFieldManager : MonoBehaviour
                 {
                     continue;
                 }
-                if (fog[row, column].activeSelf)
+                if (IsHiddenByFog(row, column))
                 {
                     return false;
                 }

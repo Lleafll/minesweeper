@@ -567,8 +567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656bd8626b4dfa942a3986dfdb8e2335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 6
-  columns: 8
+  rows: 15
+  columns: 10
   defaultReference: {fileID: 1292610183469028623, guid: dc015999c691b754594bad1ce8ded0b8, type: 3}
   emptyReference: {fileID: 4366485065746032908, guid: 4054fe87ebfe78d44b9bed98e3e7dc8f, type: 3}
   mineReference: {fileID: 3371629431940761664, guid: 9539edc4df29e5a4b91d6f9481d3983c, type: 3}
@@ -582,7 +582,7 @@ MonoBehaviour:
   Proximity7Reference: {fileID: 272101563563867381, guid: b020f53f734f83249927e8a1e6a6f3a5, type: 3}
   Proximity8Reference: {fileID: 203720836678808057, guid: be7fd6a0f6bd020498744579fe30c123, type: 3}
   tileSize: 1
-  mineCount: 10
+  mineCount: 30
 --- !u!1 &635119822
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +719,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 10
+  m_Text: 30
 --- !u!222 &655064131
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2014,7 +2014,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 10
+  m_Text: 15
 --- !u!222 &2092688229
 CanvasRenderer:
   m_ObjectHideFlags: 0
