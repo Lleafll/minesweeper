@@ -268,7 +268,8 @@ public class MineFieldManager : MonoBehaviour
                     if (flagButtonMode)
                     {
                         flags[row, column].SetActive(!flags[row, column].activeSelf);
-                    } else
+                    }
+                    else
                     {
                         clearFog(row, column);
                     }
@@ -276,7 +277,10 @@ public class MineFieldManager : MonoBehaviour
             }
             else
             {
-                gameOver = clearAround(row, column);
+                if (FlagsInProximityMatchTile(row, column))
+                {
+                    gameOver = clearAround(row, column);
+                }
             }
             if (gameOver)
             {
@@ -295,9 +299,38 @@ public class MineFieldManager : MonoBehaviour
     private (int, int) getClickedRowAndColumn()
     {
         var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var row = (int)(mousePosition.y / -tileSize + tileSize / 2);
-        var column = (int)(mousePosition.x / tileSize + tileSize / 2);
+        var row = (int)System.Math.Round(mousePosition.y / -tileSize + tileSize / 2 - 0.5);
+        var column = (int)System.Math.Round(mousePosition.x / tileSize + tileSize / 2 - 0.5);
         return (row, column);
+    }
+
+    private bool FlagsInProximityMatchTile(int row, int column)
+    {
+        return FlagsInProximity(row, column) == (int)tiles[row, column];
+    }
+
+    private int FlagsInProximity(int row, int column)
+    {
+        int flagsInProximity = 0;
+        for (int x = row - 1; x <= row + 1; x++)
+        {
+            if (x < 0 || x >= rows)
+            {
+                continue;
+            }
+            for (int y = column - 1; y <= column + 1; y++)
+            {
+                if (y < 0 || y >= columns)
+                {
+                    continue;
+                }
+                if (IsProtectedByFlag(x, y))
+                {
+                    flagsInProximity++;
+                }
+            }
+        }
+        return flagsInProximity;
     }
 
     private bool clearAround(int row, int column)
