@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraDrag : MonoBehaviour
 {
+    // Source: https://www.youtube.com/watch?v=0G4vcH9N0gc
+
     Vector3 touchStart;
 
     void Update()
