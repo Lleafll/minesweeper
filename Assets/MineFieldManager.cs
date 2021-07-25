@@ -61,6 +61,21 @@ public class MineFieldManager : MonoBehaviour
         gameWonText.enabled = false;
     }
 
+    public void SetMineCount(string value)
+    {
+        mineCount = int.Parse(value);
+    }
+
+    public void SetRows(string value)
+    {
+        rows = int.Parse(value);
+    }
+
+    public void SetColumns(string value)
+    {
+        columns = int.Parse(value);
+    }
+
     private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
     {
         var tiles = new Tile[rows, columns];
