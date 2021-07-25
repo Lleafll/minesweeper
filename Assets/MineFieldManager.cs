@@ -34,20 +34,31 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private float tileSize = 1;
     [SerializeField] private int mineCount = 10;
     private Tile[,] tiles;
+    private GameObject[,] grid;
     private GameObject[,] fog;
     private GameObject[,] flags;
     private bool gameOver = false;
 
     void Start()
     {
-        mineCount = System.Math.Min(mineCount, rows * columns / 2);
-        tiles = GenerateTiles(rows, columns, mineCount);
-        GenerateGrid();
-        fog = GenerateFog();
-        flags = GenerateFlags();
+        Reset();
         var gridWidth = columns * tileSize;
         var gridHeight = rows * tileSize;
         Camera.main.transform.Translate(new Vector3(gridWidth / 2 - tileSize / 2, -gridHeight / 2 + tileSize / 2, 0));
+    }
+
+    public void Reset()
+    {
+        mineCount = System.Math.Min(mineCount, rows * columns / 2);
+        tiles = GenerateTiles(rows, columns, mineCount);
+        GenerateGrid();
+        GenerateFog();
+        GenerateFlags();
+        gameOver = false;
+        var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
+        gameOverText.enabled = false;
+        var gameWonText = GameObject.Find("GameWonScreen").GetComponent<Text>();
+        gameWonText.enabled = false;
     }
 
     private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
@@ -107,6 +118,14 @@ public class MineFieldManager : MonoBehaviour
 
     private void GenerateGrid()
     {
+        if (grid != null)
+        {
+            foreach (var g in grid)
+            {
+                Destroy(g);
+            }
+        }
+        grid = new GameObject[rows, columns];
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
@@ -115,13 +134,21 @@ public class MineFieldManager : MonoBehaviour
                 var posX = column * tileSize;
                 var posY = row * -tileSize;
                 tile.transform.position = new Vector2(posX, posY);
+                grid[row, column] = tile;
             }
         }
     }
 
-    private GameObject[,] GenerateFog()
+    private void GenerateFog()
     {
-        var tiles = new GameObject[rows, columns];
+        if (fog != null)
+        {
+            foreach (var f in fog)
+            {
+                Destroy(f);
+            }
+        }
+        fog = new GameObject[rows, columns];
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
@@ -130,15 +157,21 @@ public class MineFieldManager : MonoBehaviour
                 var posX = column * tileSize;
                 var posY = row * -tileSize;
                 tile.transform.position = new Vector3(posX, posY, -1);
-                tiles[row, column] = tile;
+                fog[row, column] = tile;
             }
         }
-        return tiles;
     }
 
-    private GameObject[,] GenerateFlags()
+    private void GenerateFlags()
     {
-        var tiles = new GameObject[rows, columns];
+        if (flags != null)
+        {
+            foreach (var flag in flags)
+            {
+                Destroy(flag);
+            }
+        }
+        flags = new GameObject[rows, columns];
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
@@ -148,10 +181,9 @@ public class MineFieldManager : MonoBehaviour
                 var posY = row * -tileSize;
                 tile.transform.position = new Vector3(posX, posY, -2);
                 tile.SetActive(false);
-                tiles[row, column] = tile;
+                flags[row, column] = tile;
             }
         }
-        return tiles;
     }
 
     private GameObject InstantiateTile(Tile tile)
