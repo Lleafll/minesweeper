@@ -241,7 +241,7 @@ public class MineFieldManager : MonoBehaviour
         {
             return;
         }
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButtonDown(0))
         {
             var (row, column) = getClickedRowAndColumn();
             if (row < 0 || column < 0 || row >= rows || column >= columns)
