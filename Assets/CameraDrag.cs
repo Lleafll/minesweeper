@@ -2,30 +2,18 @@ using UnityEngine;
 
 public class CameraDrag : MonoBehaviour
 {
-    private Vector3 originalCameraPosition = new Vector3();
-    private Vector3 startDragPosition = new Vector3();
-    private Vector3? lastMousePosition = null;
+    Vector3 touchStart;
 
-    void LateUpdate()
+    void Update()
     {
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(0))
         {
-            originalCameraPosition = transform.position;
-            startDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            lastMousePosition = null;
-            return;
+            touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
-        if (Input.GetMouseButton(2))
+        if (Input.GetMouseButton(0))
         {
-            var mousePosition = Input.mousePosition;
-            if (lastMousePosition != null && Vector3.Distance(mousePosition, (Vector3)lastMousePosition) < 1)
-            {
-                return;
-            }
-            lastMousePosition = mousePosition;
-            var dragDiff = startDragPosition - Camera.main.ScreenToWorldPoint(mousePosition);
-            var newPosition = originalCameraPosition + dragDiff;
-            transform.position = new Vector3(newPosition.x, newPosition.y, originalCameraPosition.z);
+            Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Camera.main.transform.position += direction;
         }
     }
 }
