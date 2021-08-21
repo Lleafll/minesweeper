@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-enum Tile
+public enum Tile
 {
     Empty = 0,
     Proximity1 = 1,
@@ -18,11 +18,11 @@ enum Tile
 public class MineField
 {
     private Tile[,] tiles;
-    public int rows { get; };
-    public int columns { get; };
+    public int rows { get; private set; }
+    public int columns { get; private set; }
     private bool[,] fog;
 
-    public void MineField(Tile[,] tiles)
+    public MineField(Tile[,] tiles)
     {
         this.tiles = tiles;
         rows = tiles.GetLength(0);
@@ -37,7 +37,7 @@ public class MineField
         {
             for (int column = 0; column < columns; column++)
             {
-                for[row, column] = true;
+                fog[row, column] = true;
             }
         }
     }

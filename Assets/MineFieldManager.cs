@@ -1,20 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-enum Tile
-{
-    Empty = 0,
-    Proximity1 = 1,
-    Proximity2 = 2,
-    Proximity3 = 3,
-    Proximity4 = 4,
-    Proximity5 = 5,
-    Proximity6 = 6,
-    Proximity7 = 7,
-    Proximity8 = 8,
-    Mine
-}
-
 public class MineFieldManager : MonoBehaviour
 {
     [SerializeField] private int rows = 10;
