@@ -33,7 +33,7 @@ public class MineField
     private void GenerateFog()
     {
         fog = new bool[rows, columns];
-        for (int row = rows; rows < rows; rows++)
+        for (int row = 0; row < rows; rows++)
         {
             for (int column = 0; column < columns; column++)
             {
@@ -44,6 +44,15 @@ public class MineField
 
     public Tile? TileAt(int row, int column)
     {
-        return null;
+        if (fog[row, column])
+        {
+            return null;
+        }
+        return tiles[row, column];
+    }
+
+    public void RevealAt(int row, int column)
+    {
+        fog[row, column] = false;
     }
 }
