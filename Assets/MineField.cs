@@ -12,7 +12,9 @@ public enum Tile
     Proximity6 = 6,
     Proximity7 = 7,
     Proximity8 = 8,
-    Mine
+    Mine,
+    Fog,
+    Flag
 }
 
 public class MineField
@@ -21,19 +23,70 @@ public class MineField
     public int rows { get; private set; }
     public int columns { get; private set; }
     private bool[,] fog;
+    private bool[,] flags;
 
-    public MineField(Tile[,] tiles)
+    public MineField(bool[,] mines)
     {
-        this.tiles = tiles;
-        rows = tiles.GetLength(0);
-        columns = tiles.GetLength(1);
+        rows = mines.GetLength(0);
+        columns = mines.GetLength(1);
+        GenerateTiles(mines);
         GenerateFog();
+        GenerateFlags();
+    }
+
+    private void GenerateTiles(bool[,] mines)
+    {
+        tiles = new Tile[rows, columns];
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (mines[row, column])
+                {
+                    tiles[row, column] = Tile.Mine;
+                }
+                else
+                {
+                    tiles[row, column] = Tile.Empty;
+                }
+            }
+        }
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (tiles[row, column] == Tile.Mine)
+                {
+                    continue;
+                }
+                var minesInProximity = 0;
+                for (int x = row - 1; x <= row + 1; x++)
+                {
+                    if (x < 0 || x >= rows)
+                    {
+                        continue;
+                    }
+                    for (int y = column - 1; y <= column + 1; y++)
+                    {
+                        if (y < 0 || y >= columns)
+                        {
+                            continue;
+                        }
+                        if (tiles[x, y] == Tile.Mine)
+                        {
+                            minesInProximity++;
+                        }
+                    }
+                }
+                tiles[row, column] = (Tile)minesInProximity;
+            }
+        }
     }
 
     private void GenerateFog()
     {
         fog = new bool[rows, columns];
-        for (int row = 0; row < rows; rows++)
+        for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
             {
@@ -42,11 +95,23 @@ public class MineField
         }
     }
 
-    public Tile? TileAt(int row, int column)
+    private void GenerateFlags()
+    {
+        flags = new bool[rows, columns];
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                flags[row, column] = false;
+            }
+        }
+    }
+
+    public Tile TileAt(int row, int column)
     {
         if (fog[row, column])
         {
-            return null;
+            return Tile.Fog;
         }
         return tiles[row, column];
     }
