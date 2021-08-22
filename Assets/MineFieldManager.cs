@@ -24,7 +24,6 @@ public class MineFieldManager : MonoBehaviour
     private GameObject[,] fog;
     private GameObject[,] flags;
     private bool gameOver = false;
-    private bool firstHit = true;
     private bool flagButtonMode = true;
 
     void Start()
@@ -47,7 +46,6 @@ public class MineFieldManager : MonoBehaviour
         gameOverText.enabled = false;
         var gameWonText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameWonText.enabled = false;
-        firstHit = true;
     }
 
     public void SetMineCount(string value)
@@ -244,21 +242,13 @@ public class MineFieldManager : MonoBehaviour
             }
             else if (IsHiddenByFog(row, column))
             {
-                if (firstHit)
+                if (flagButtonMode)
                 {
-                    gameOver = clearFog(row, column);
-                    firstHit = false;
+                    flags[row, column].SetActive(!flags[row, column].activeSelf);
                 }
                 else
                 {
-                    if (flagButtonMode)
-                    {
-                        flags[row, column].SetActive(!flags[row, column].activeSelf);
-                    }
-                    else
-                    {
-                        clearFog(row, column);
-                    }
+                    clearFog(row, column);
                 }
             }
             else
