@@ -163,9 +163,9 @@ public class MineFieldManager : MonoBehaviour
         {
             for (int column = 0; column < columns; column++)
             {
-                if (field.TileAt(row, column) == Tile.Mine)
+                if (field.TileAt(row, column) == Tile.Fog)
                 {
-                    continue;
+                    return false;
                 }
             }
         }
