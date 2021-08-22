@@ -141,6 +141,7 @@ public class MineFieldManager : MonoBehaviour
             {
                 field.RevealAt(row, column);
             }
+            GenerateGrid();
             if (gameOver)
             {
                 return;
