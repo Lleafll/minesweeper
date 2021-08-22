@@ -43,4 +43,27 @@ public class MineFieldTest
         mineField.SetFlag(0, 0);
         Assert.AreEqual(Tile.Empty, mineField.TileAt(0, 0));
     }
+
+    [Test]
+    public void TestFlagPreventsReveal()
+    {
+        var mines = new bool[1, 1];
+        mines[0, 0] = true;
+        var mineField = new MineField(mines);
+        mineField.SetFlag(0, 0);
+        mineField.RevealAt(0, 0);
+        mineField.SetFlag(0, 0);
+        Assert.AreEqual(Tile.Fog, mineField.TileAt(0, 0));
+    }
+
+    [Test]
+    public void TestUnsetFlag()
+    {
+        var mines = new bool[1, 1];
+        mines[0, 0] = true;
+        var mineField = new MineField(mines);
+        mineField.SetFlag(0, 0);
+        mineField.SetFlag(0, 0);
+        Assert.AreEqual(Tile.Fog, mineField.TileAt(0, 0));
+    }
 }

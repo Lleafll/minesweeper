@@ -122,6 +122,10 @@ public class MineField
 
     public void RevealAt(int row, int column)
     {
+        if (flags[row, column])
+        {
+            return;
+        }
         fog[row, column] = false;
     }
 
@@ -131,6 +135,6 @@ public class MineField
         {
             return;
         }
-        flags[row, column] = true;
+        flags[row, column] = !flags[row, column];
     }
 }
