@@ -151,8 +151,71 @@ public class MineField
         {
             return;
         }
+        if (fog[row, column])
+        {
+            ClearFog(row, column);
+        }
+        else
+        {
+            if (FlagsInProximity(row, column) == (int)tiles[row, column])
+            {
+                ClearAround(row, column);
+            }
+        }
+    }
+
+    private void ClearFog(int row, int column)
+    {
+        if (flags[row, column])
+        {
+            return;
+        }
         fog[row, column] = false;
         ClearAutomatically();
+    }
+
+
+    private int FlagsInProximity(int row, int column)
+    {
+        int flagsInProximity = 0;
+        for (int x = row - 1; x <= row + 1; x++)
+        {
+            if (x < 0 || x >= rows)
+            {
+                continue;
+            }
+            for (int y = column - 1; y <= column + 1; y++)
+            {
+                if (y < 0 || y >= columns)
+                {
+                    continue;
+                }
+                if (flags[x, y])
+                {
+                    flagsInProximity++;
+                }
+            }
+        }
+        return flagsInProximity;
+    }
+
+    private void ClearAround(int row, int column)
+    {
+        for (int x = row - 1; x <= row + 1; x++)
+        {
+            if (x < 0 || x >= rows)
+            {
+                continue;
+            }
+            for (int y = column - 1; y <= column + 1; y++)
+            {
+                if (y < 0 || y >= columns)
+                {
+                    continue;
+                }
+                ClearFog(x, y);
+            }
+        }
     }
 
     private void ClearAutomatically()
