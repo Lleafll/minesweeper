@@ -19,10 +19,13 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private Object Proximity8Reference;
     [SerializeField] private float tileSize = 1;
     [SerializeField] private int mineCount = 10;
+    [SerializeField] private float longPressDurationInSeconds = 0.5F;
     private MineField field;
     private GameObject[,] grid;
     private bool gameOver = false;
     private bool flagButtonMode = true;
+    private bool isButtonDown = false;
+    private float buttonDownDuration = 0;
 
     void Start()
     {
@@ -126,8 +129,37 @@ public class MineFieldManager : MonoBehaviour
         {
             return;
         }
-        else if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
+            buttonDownDuration = 0;
+            isButtonDown = true;
+        }
+        else if (isButtonDown && Input.GetMouseButton(0))
+        {
+            buttonDownDuration += Time.deltaTime;
+            if (buttonDownDuration >= longPressDurationInSeconds)
+            {
+                isButtonDown = false;
+                var (row, column) = getClickedRowAndColumn();
+                if (row < 0 || column < 0 || row >= rows || column >= columns)
+                {
+                    return;
+                }
+                if (flagButtonMode)
+                {
+                    field.RevealAt(row, column);
+                }
+                else
+                {
+                    field.SetFlag(row, column);
+                }
+                GenerateGrid();
+                gameOver = CheckIfGameOver();
+            }
+        }
+        if (isButtonDown && Input.GetMouseButtonUp(0))
+        {
+            isButtonDown = false;
             var (row, column) = getClickedRowAndColumn();
             if (row < 0 || column < 0 || row >= rows || column >= columns)
             {
