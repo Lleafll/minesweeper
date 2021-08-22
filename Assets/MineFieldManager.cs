@@ -26,6 +26,7 @@ public class MineFieldManager : MonoBehaviour
     private bool flagButtonMode = true;
     private bool isButtonDown = false;
     private float buttonDownDuration = 0;
+    private bool isFirstReveal = true;
 
     void Start()
     {
@@ -45,6 +46,7 @@ public class MineFieldManager : MonoBehaviour
         gameOverText.enabled = false;
         var gameWonText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameWonText.enabled = false;
+        isFirstReveal = true;
     }
 
     public void SetMineCount(string value)
@@ -163,6 +165,15 @@ public class MineFieldManager : MonoBehaviour
         else
         {
             field.RevealAt(row, column);
+            if (isFirstReveal)
+            {
+                if (field.CheckGameStatus() == GameStatus.Lost)
+                {
+                    Reset();
+                    ExecuteClick(directClick);
+                }
+                isFirstReveal = false;
+            }
         }
         GenerateGrid();
         gameOver = CheckIfGameOver();
