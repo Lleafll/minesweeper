@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum Tile
 {
@@ -32,6 +33,30 @@ public class MineField
         GenerateTiles(mines);
         GenerateFog();
         GenerateFlags();
+    }
+
+    public static MineField GenerateRandom(int rows, int columns, int mineCount)
+    {
+        var mines = new bool[rows, columns];
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                mines[row, column] = false;
+            }
+        }
+        while (mineCount != 0)
+        {
+            var index = Random.Range(0, rows * columns);
+            var row = index / columns;
+            var column = index % columns;
+            if (!mines[row, column])
+            {
+                mines[row, column] = true;
+                --mineCount;
+            }
+        }
+        return new MineField(mines);
     }
 
     private void GenerateTiles(bool[,] mines)
