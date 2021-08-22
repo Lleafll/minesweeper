@@ -19,10 +19,8 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private Object Proximity8Reference;
     [SerializeField] private float tileSize = 1;
     [SerializeField] private int mineCount = 10;
-    private Tile[,] tiles;
+    private MineField field;
     private GameObject[,] grid;
-    private GameObject[,] fog;
-    private GameObject[,] flags;
     private bool gameOver = false;
     private bool flagButtonMode = true;
 
@@ -37,10 +35,8 @@ public class MineFieldManager : MonoBehaviour
     public void Reset()
     {
         mineCount = System.Math.Min(mineCount, rows * columns / 2);
-        tiles = GenerateTiles(rows, columns, mineCount);
+        field = MineField.GenerateRandom(rows, columns, mineCount);
         GenerateGrid();
-        GenerateFog();
-        GenerateFlags();
         gameOver = false;
         var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
         gameOverText.enabled = false;
@@ -68,61 +64,6 @@ public class MineFieldManager : MonoBehaviour
         flagButtonMode = value;
     }
 
-    private static Tile[,] GenerateTiles(int rows, int columns, int mineCount)
-    {
-        var tiles = new Tile[rows, columns];
-        for (int row = 0; row < rows; row++)
-        {
-            for (int column = 0; column < columns; column++)
-            {
-                tiles[row, column] = Tile.Empty;
-            }
-        }
-        var minesRemaining = mineCount;
-        while (minesRemaining != 0)
-        {
-            var index = Random.Range(0, rows * columns);
-            var row = index / columns;
-            var column = index % columns;
-            if (tiles[row, column] != Tile.Mine)
-            {
-                tiles[row, column] = Tile.Mine;
-                --minesRemaining;
-            }
-        }
-        for (int row = 0; row < rows; row++)
-        {
-            for (int column = 0; column < columns; column++)
-            {
-                if (tiles[row, column] == Tile.Mine)
-                {
-                    continue;
-                }
-                var minesInProximity = 0;
-                for (int x = row - 1; x <= row + 1; x++)
-                {
-                    if (x < 0 || x >= rows)
-                    {
-                        continue;
-                    }
-                    for (int y = column - 1; y <= column + 1; y++)
-                    {
-                        if (y < 0 || y >= columns)
-                        {
-                            continue;
-                        }
-                        if (tiles[x, y] == Tile.Mine)
-                        {
-                            minesInProximity++;
-                        }
-                    }
-                }
-                tiles[row, column] = (Tile)minesInProximity;
-            }
-        }
-        return tiles;
-    }
-
     private void GenerateGrid()
     {
         if (grid != null)
@@ -137,58 +78,11 @@ public class MineFieldManager : MonoBehaviour
         {
             for (int column = 0; column < columns; column++)
             {
-                var tile = InstantiateTile(tileAt(row, column));
+                var tile = InstantiateTile(field.TileAt(row, column));
                 var posX = column * tileSize;
                 var posY = row * -tileSize;
                 tile.transform.position = new Vector2(posX, posY);
                 grid[row, column] = tile;
-            }
-        }
-    }
-
-    private void GenerateFog()
-    {
-        if (fog != null)
-        {
-            foreach (var f in fog)
-            {
-                Destroy(f);
-            }
-        }
-        fog = new GameObject[rows, columns];
-        for (int row = 0; row < rows; row++)
-        {
-            for (int column = 0; column < columns; column++)
-            {
-                var tile = Instantiate(defaultReference, transform) as GameObject;
-                var posX = column * tileSize;
-                var posY = row * -tileSize;
-                tile.transform.position = new Vector3(posX, posY, -1);
-                fog[row, column] = tile;
-            }
-        }
-    }
-
-    private void GenerateFlags()
-    {
-        if (flags != null)
-        {
-            foreach (var flag in flags)
-            {
-                Destroy(flag);
-            }
-        }
-        flags = new GameObject[rows, columns];
-        for (int row = 0; row < rows; row++)
-        {
-            for (int column = 0; column < columns; column++)
-            {
-                var tile = Instantiate(flagReference, transform) as GameObject;
-                var posX = column * tileSize;
-                var posY = row * -tileSize;
-                tile.transform.position = new Vector3(posX, posY, -2);
-                tile.SetActive(false);
-                flags[row, column] = tile;
             }
         }
     }
@@ -217,13 +111,12 @@ public class MineFieldManager : MonoBehaviour
                 return Instantiate(Proximity7Reference, transform) as GameObject;
             case Tile.Proximity8:
                 return Instantiate(Proximity8Reference, transform) as GameObject;
+            case Tile.Fog:
+                return Instantiate(defaultReference, transform) as GameObject;
+            case Tile.Flag:
+                return Instantiate(flagReference, transform) as GameObject;
         }
         throw new System.InvalidOperationException("Tile case not handled");
-    }
-
-    private Tile tileAt(int row, int column)
-    {
-        return tiles[row, column];
     }
 
     // Update is called once per frame
@@ -240,36 +133,20 @@ public class MineFieldManager : MonoBehaviour
             {
                 return;
             }
-            else if (IsHiddenByFog(row, column))
+            if (flagButtonMode)
             {
-                if (flagButtonMode)
-                {
-                    flags[row, column].SetActive(!flags[row, column].activeSelf);
-                }
-                else
-                {
-                    clearFog(row, column);
-                }
+                field.SetFlag(row, column);
             }
             else
             {
-                if (FlagsInProximityMatchTile(row, column))
-                {
-                    gameOver = clearAround(row, column);
-                }
+                field.RevealAt(row, column);
             }
             if (gameOver)
             {
                 return;
             }
-            clearAutomatically();
             gameOver = checkIfWon();
         }
-    }
-
-    private bool IsHiddenByFog(int row, int column)
-    {
-        return fog[row, column].activeSelf;
     }
 
     private (int, int) getClickedRowAndColumn()
@@ -280,135 +157,15 @@ public class MineFieldManager : MonoBehaviour
         return (row, column);
     }
 
-    private bool FlagsInProximityMatchTile(int row, int column)
-    {
-        return FlagsInProximity(row, column) == (int)tiles[row, column];
-    }
-
-    private int FlagsInProximity(int row, int column)
-    {
-        int flagsInProximity = 0;
-        for (int x = row - 1; x <= row + 1; x++)
-        {
-            if (x < 0 || x >= rows)
-            {
-                continue;
-            }
-            for (int y = column - 1; y <= column + 1; y++)
-            {
-                if (y < 0 || y >= columns)
-                {
-                    continue;
-                }
-                if (IsProtectedByFlag(x, y))
-                {
-                    flagsInProximity++;
-                }
-            }
-        }
-        return flagsInProximity;
-    }
-
-    private bool clearAround(int row, int column)
-    {
-        bool mineHit = false;
-        for (int x = row - 1; x <= row + 1; x++)
-        {
-            if (x < 0 || x >= rows)
-            {
-                continue;
-            }
-            for (int y = column - 1; y <= column + 1; y++)
-            {
-                if (y < 0 || y >= columns)
-                {
-                    continue;
-                }
-                if (!IsProtectedByFlag(x, y) && IsHiddenByFog(x, y))
-                {
-                    var mineUnderFog = clearFog(x, y);
-                    if (mineUnderFog)
-                    {
-                        mineHit = true;
-                    }
-                }
-            }
-        }
-        return mineHit;
-    }
-
-    private bool IsProtectedByFlag(int row, int column)
-    {
-        return flags[row, column].activeSelf;
-    }
-
-    private bool clearFog(int row, int column)
-    {
-        fog[row, column].SetActive(false);
-        return checkIfMineHit(row, column);
-    }
-
-    private bool checkIfMineHit(int row, int column)
-    {
-        if (tiles[row, column] == Tile.Mine)
-        {
-            var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
-            gameOverText.enabled = true;
-            return true;
-        }
-        return false;
-    }
-
-    private void clearAutomatically()
-    {
-        var noChanges = true;
-        for (int row = 0; row < rows; row++)
-        {
-            for (int column = 0; column < columns; column++)
-            {
-                if (!IsHiddenByFog(row, column) && tiles[row, column] == Tile.Empty)
-                {
-                    for (int x = row - 1; x <= row + 1; x++)
-                    {
-                        if (x < 0 || x >= rows)
-                        {
-                            continue;
-                        }
-                        for (int y = column - 1; y <= column + 1; y++)
-                        {
-                            if (y < 0 || y >= columns)
-                            {
-                                continue;
-                            }
-                            if (IsHiddenByFog(x, y))
-                            {
-                                clearFog(x, y);
-                                noChanges = false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (!noChanges)
-        {
-            clearAutomatically();
-        }
-    }
-
     private bool checkIfWon()
     {
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
             {
-                if (tiles[row, column] == Tile.Mine)
+                if (field.TileAt(row, column) == Tile.Mine)
                 {
                     continue;
-                }
-                if (IsHiddenByFog(row, column))
-                {
-                    return false;
                 }
             }
         }

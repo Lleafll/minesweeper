@@ -152,6 +152,38 @@ public class MineField
             return;
         }
         fog[row, column] = false;
+        ClearAutomatically();
+    }
+
+    private void ClearAutomatically()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (!fog[row, column] && tiles[row, column] == Tile.Empty)
+                {
+                    for (int x = row - 1; x <= row + 1; x++)
+                    {
+                        if (x < 0 || x >= rows)
+                        {
+                            continue;
+                        }
+                        for (int y = column - 1; y <= column + 1; y++)
+                        {
+                            if (y < 0 || y >= columns)
+                            {
+                                continue;
+                            }
+                            if (fog[x, y])
+                            {
+                                RevealAt(x, y);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void SetFlag(int row, int column)
