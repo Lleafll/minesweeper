@@ -100,4 +100,22 @@ public class MineFieldTest
         Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 0));
         Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 1));
     }
+
+    [Test]
+    public void TestRevealWhenSettingGlagOnNumber()
+    {
+        var mines = new bool[2, 2];
+        mines[0, 0] = true;
+        mines[0, 1] = false;
+        mines[1, 0] = false;
+        mines[1, 1] = false;
+        var mineField = new MineField(mines);
+        mineField.SetFlag(0, 0);
+        mineField.RevealAt(0, 1);
+        mineField.SetFlag(0, 1);
+        Assert.AreEqual(Tile.Flag, mineField.TileAt(0, 0));
+        Assert.AreEqual(Tile.Proximity1, mineField.TileAt(0, 1));
+        Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 0));
+        Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 1));
+    }
 }

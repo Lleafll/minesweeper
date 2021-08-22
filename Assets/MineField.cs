@@ -251,10 +251,13 @@ public class MineField
 
     public void SetFlag(int row, int column)
     {
-        if (!fog[row, column])
+        if (fog[row, column])
         {
-            return;
+            flags[row, column] = !flags[row, column];
         }
-        flags[row, column] = !flags[row, column];
+        else
+        {
+            RevealAt(row, column);
+        }
     }
 }
