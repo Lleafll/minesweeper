@@ -109,6 +109,10 @@ public class MineField
 
     public Tile TileAt(int row, int column)
     {
+        if (flags[row, column])
+        {
+            return Tile.Flag;
+        }
         if (fog[row, column])
         {
             return Tile.Fog;
@@ -119,5 +123,14 @@ public class MineField
     public void RevealAt(int row, int column)
     {
         fog[row, column] = false;
+    }
+
+    public void SetFlag(int row, int column)
+    {
+        if (!fog[row, column])
+        {
+            return;
+        }
+        flags[row, column] = true;
     }
 }
