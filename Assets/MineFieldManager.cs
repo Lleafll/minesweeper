@@ -139,43 +139,33 @@ public class MineFieldManager : MonoBehaviour
             buttonDownDuration += Time.deltaTime;
             if (buttonDownDuration >= longPressDurationInSeconds)
             {
-                isButtonDown = false;
-                var (row, column) = getClickedRowAndColumn();
-                if (row < 0 || column < 0 || row >= rows || column >= columns)
-                {
-                    return;
-                }
-                if (flagButtonMode)
-                {
-                    field.RevealAt(row, column);
-                }
-                else
-                {
-                    field.SetFlag(row, column);
-                }
-                GenerateGrid();
-                gameOver = CheckIfGameOver();
+                ExecuteClick(false);
             }
         }
-        if (isButtonDown && Input.GetMouseButtonUp(0))
+        else if (isButtonDown && Input.GetMouseButtonUp(0))
         {
-            isButtonDown = false;
-            var (row, column) = getClickedRowAndColumn();
-            if (row < 0 || column < 0 || row >= rows || column >= columns)
-            {
-                return;
-            }
-            if (flagButtonMode)
-            {
-                field.SetFlag(row, column);
-            }
-            else
-            {
-                field.RevealAt(row, column);
-            }
-            GenerateGrid();
-            gameOver = CheckIfGameOver();
+            ExecuteClick(true);
         }
+    }
+
+    void ExecuteClick(bool directClick)
+    {
+        isButtonDown = false;
+        var (row, column) = getClickedRowAndColumn();
+        if (row < 0 || column < 0 || row >= rows || column >= columns)
+        {
+            return;
+        }
+        if (flagButtonMode == directClick)
+        {
+            field.SetFlag(row, column);
+        }
+        else
+        {
+            field.RevealAt(row, column);
+        }
+        GenerateGrid();
+        gameOver = CheckIfGameOver();
     }
 
     private (int, int) getClickedRowAndColumn()
