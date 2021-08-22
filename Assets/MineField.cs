@@ -18,6 +18,13 @@ public enum Tile
     Flag
 }
 
+public enum GameStatus
+{
+    Running,
+    Won,
+    Lost
+}
+
 public class MineField
 {
     private Tile[,] tiles;
@@ -259,5 +266,48 @@ public class MineField
         {
             RevealAt(row, column);
         }
+    }
+
+    public GameStatus CheckGameStatus()
+    {
+        if (IsMineHit())
+        {
+            return GameStatus.Lost;
+        }
+        if (AreAllNonMinesRevealed())
+        {
+            return GameStatus.Won;
+        }
+        return GameStatus.Running;
+    }
+
+    private bool IsMineHit()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (!fog[row, column] && tiles[row, column] == Tile.Mine)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool AreAllNonMinesRevealed()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (fog[row, column] && tiles[row, column] != Tile.Mine)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

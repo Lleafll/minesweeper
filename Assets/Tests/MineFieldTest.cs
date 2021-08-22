@@ -118,4 +118,33 @@ public class MineFieldTest
         Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 0));
         Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 1));
     }
+
+    [Test]
+    public void TestCheckGameStatusRunning()
+    {
+        var mines = new bool[1, 1];
+        mines[0, 0] = false;
+        var mineField = new MineField(mines);
+        Assert.AreEqual(GameStatus.Running, mineField.CheckGameStatus());
+    }
+
+    [Test]
+    public void TestCheckGameStatusLostWhenMineIsRevealed()
+    {
+        var mines = new bool[1, 1];
+        mines[0, 0] = true;
+        var mineField = new MineField(mines);
+        mineField.RevealAt(0, 0);
+        Assert.AreEqual(GameStatus.Lost, mineField.CheckGameStatus());
+    }
+
+    [Test]
+    public void TestCheckGameStatusWonWhenEverythingIsRevealed()
+    {
+        var mines = new bool[1, 1];
+        mines[0, 0] = false;
+        var mineField = new MineField(mines);
+        mineField.RevealAt(0, 0);
+        Assert.AreEqual(GameStatus.Won, mineField.CheckGameStatus());
+    }
 }
