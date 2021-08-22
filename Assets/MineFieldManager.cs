@@ -142,11 +142,7 @@ public class MineFieldManager : MonoBehaviour
                 field.RevealAt(row, column);
             }
             GenerateGrid();
-            if (gameOver)
-            {
-                return;
-            }
-            gameOver = checkIfWon();
+            gameOver = CheckIfGameOver();
         }
     }
 
@@ -158,20 +154,30 @@ public class MineFieldManager : MonoBehaviour
         return (row, column);
     }
 
-    private bool checkIfWon()
+    private bool CheckIfGameOver()
     {
-        for (int row = 0; row < rows; row++)
+        var gameStatus = field.CheckGameStatus();
+        switch (gameStatus)
         {
-            for (int column = 0; column < columns; column++)
-            {
-                if (field.TileAt(row, column) == Tile.Fog)
-                {
-                    return false;
-                }
-            }
+            case GameStatus.Won:
+                ShowGameWonScreen();
+                break;
+            case GameStatus.Lost:
+                ShowGameLostScreen();
+                break;
         }
+        return gameStatus != GameStatus.Running;
+    }
+
+    private void ShowGameWonScreen()
+    {
         var gameOverText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameOverText.enabled = true;
-        return true;
+    }
+
+    private void ShowGameLostScreen()
+    {
+        var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
+        gameOverText.enabled = true;
     }
 }
