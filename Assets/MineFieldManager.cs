@@ -20,7 +20,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private float tileSize = 1;
     [SerializeField] private int mineCount = 10;
     [SerializeField] private float longPressDurationInSeconds = 0.5F;
-    [SerializeField] private long vibrationDurationInMs = 100;
+    [SerializeField] private long vibrationDurationInMs = 50;
     private MineField field;
     private GameObject[,] grid;
     private bool gameOver = false;
@@ -31,6 +31,7 @@ public class MineFieldManager : MonoBehaviour
 
     void Start()
     {
+        Vibration.Init();
         Reset();
         var gridWidth = columns * tileSize;
         var gridHeight = rows * tileSize;
@@ -159,10 +160,7 @@ public class MineFieldManager : MonoBehaviour
         {
             return;
         }
-        if (Vibration.HasVibrator())
-        {
-            Vibration.Vibrate();
-        }
+        Vibration.Vibrate(vibrationDurationInMs);
         if (flagButtonMode == directClick)
         {
             field.SetFlag(row, column);
