@@ -20,7 +20,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private float tileSize = 1;
     [SerializeField] private int mineCount = 10;
     [SerializeField] private float longPressDurationInSeconds = 0.5F;
-    [SerializeField] private long vibrationDurationInMs = 50;
+    [SerializeField] private long vibrationDurationInMs = 20;
     private MineField field;
     private GameObject[,] grid;
     private bool gameOver = false;
