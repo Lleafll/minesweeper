@@ -147,4 +147,15 @@ public class MineFieldTest
         mineField.RevealAt(0, 0);
         Assert.AreEqual(GameStatus.Won, mineField.CheckGameStatus());
     }
+
+    [Test]
+    public void TestNoChangeWhenRevealingEmptyTile()
+    {
+        var mines = new bool[1, 1];
+        mines[0, 0] = false;
+        var mineField = new MineField(mines);
+        mineField.RevealAt(0, 0);
+        var changed = mineField.RevealAt(0, 0);
+        Assert.IsFalse(changed);
+    }
 }

@@ -178,9 +178,13 @@ public class MineField
         {
             return false;
         }
-        fog[row, column] = false;
-        ClearAutomatically();
-        return true;
+        if (fog[row, column])
+        {
+            fog[row, column] = false;
+            ClearAutomatically();
+            return true;
+        }
+        return false;
     }
 
 
