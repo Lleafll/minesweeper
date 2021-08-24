@@ -86,6 +86,15 @@ public class MineFieldManager : MonoBehaviour
     private void ZoomOut()
     {
         Camera.main.orthographicSize = rows * 0.5F * tileSize * 1.1F;
+        var screenAspect = (float)Screen.width / (float)Screen.height;
+        var camHalfHeight = Camera.main.orthographicSize;
+        var camHalfWidth = screenAspect * camHalfHeight;
+        var camWidth = 2.0f * camHalfWidth;
+        var necessaryWidth = columns * tileSize * 1.1F;
+        if (camWidth < necessaryWidth)
+        {
+            Camera.main.orthographicSize *= necessaryWidth / camWidth;
+        }
     }
 
     private GameObject InstantiateTile(Tile tile)
