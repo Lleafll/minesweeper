@@ -29,6 +29,7 @@ public class MineFieldManager : MonoBehaviour
     private float buttonDownDuration = 0;
     private bool isFirstReveal = true;
     [SerializeField] private PlayerSettings settings;
+    [SerializeField] private Button tryAgainButton;
 
     void Start()
     {
@@ -52,6 +53,7 @@ public class MineFieldManager : MonoBehaviour
         gameOverText.enabled = false;
         var gameWonText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameWonText.enabled = false;
+        tryAgainButton.gameObject.SetActive(false);
         isFirstReveal = true;
     }
 
@@ -198,11 +200,13 @@ public class MineFieldManager : MonoBehaviour
     {
         var gameOverText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameOverText.enabled = true;
+        tryAgainButton.gameObject.SetActive(true);
     }
 
     private void ShowGameLostScreen()
     {
         var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
         gameOverText.enabled = true;
+        tryAgainButton.gameObject.SetActive(true);
     }
 }
