@@ -19,14 +19,11 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private Object Proximity8Reference;
     [SerializeField] private float tileSize = 1;
     private int mineCount = 10;
-    [SerializeField] private float longPressDurationInSeconds = 0.5F;
     [SerializeField] private long vibrationDurationInMs = 20;
     private MineField field;
     private GameObject[,] grid;
     private bool gameOver = false;
     private bool flagButtonMode = true;
-    private bool isButtonDown = false;
-    private float buttonDownDuration = 0;
     private bool isFirstReveal = true;
     [SerializeField] private PlayerSettings settings;
     [SerializeField] private Button tryAgainButton;
@@ -123,35 +120,8 @@ public class MineFieldManager : MonoBehaviour
         throw new System.InvalidOperationException("Tile case not handled");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ExecuteClick(bool directClick)
     {
-        if (gameOver)
-        {
-            return;
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            buttonDownDuration = 0;
-            isButtonDown = true;
-        }
-        else if (isButtonDown && Input.GetMouseButton(0))
-        {
-            buttonDownDuration += Time.deltaTime;
-            if (buttonDownDuration >= longPressDurationInSeconds)
-            {
-                ExecuteClick(false);
-            }
-        }
-        else if (isButtonDown && Input.GetMouseButtonUp(0))
-        {
-            ExecuteClick(true);
-        }
-    }
-
-    void ExecuteClick(bool directClick)
-    {
-        isButtonDown = false;
         var (row, column) = getClickedRowAndColumn();
         if (row < 0 || column < 0 || row >= rows || column >= columns)
         {

@@ -468,7 +468,6 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -541,19 +540,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &519420033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0e960a457c75e54bbccd7819a675982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zoomOutMin: 1
 --- !u!1 &603442754
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,7 +596,6 @@ MonoBehaviour:
   Proximity7Reference: {fileID: 272101563563867381, guid: b020f53f734f83249927e8a1e6a6f3a5, type: 3}
   Proximity8Reference: {fileID: 203720836678808057, guid: be7fd6a0f6bd020498744579fe30c123, type: 3}
   tileSize: 1
-  longPressDurationInSeconds: 0.5
   vibrationDurationInMs: 20
   settings: {fileID: 502471613}
   tryAgainButton: {fileID: 93563690}
@@ -838,6 +823,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952203666}
   m_CullTransparentMesh: 1
+--- !u!1 &962776921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 962776923}
+  - component: {fileID: 962776922}
+  m_Layer: 0
+  m_Name: InputHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &962776922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962776921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c713a3549c4c6419281410ce5d1bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoomOutMin: 1
+  mineFieldmanager: {fileID: 603442756}
+  longPressDurationInSeconds: 0.4
+--- !u!4 &962776923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962776921}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1182896763
 GameObject:
   m_ObjectHideFlags: 0
