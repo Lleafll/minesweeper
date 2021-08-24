@@ -39,8 +39,8 @@ public class InputHandler : MonoBehaviour
             var touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
             var prevMagnitude = (touchZeroPrevPos - touchOnePrevPos).magnitude;
             var currentMagnitude = (touchZero.position - touchOne.position).magnitude;
-            var difference = currentMagnitude - prevMagnitude;
-            zoom(difference * 0.01f);
+            var ratio = prevMagnitude / currentMagnitude;
+            zoom(ratio);
         }
         else if (Input.GetMouseButton(0))
         {
@@ -79,7 +79,7 @@ public class InputHandler : MonoBehaviour
         {
             ExecuteClick(true);
         }
-        zoom(Input.GetAxis("Mouse ScrollWheel"));
+        zoomMouseWheel(Input.GetAxis("Mouse ScrollWheel"));
     }
 
     private void drag()
@@ -98,7 +98,12 @@ public class InputHandler : MonoBehaviour
         mineFieldmanager.ExecuteClick(directClick);
     }
 
-    void zoom(float increment)
+    private void zoom(float scale)
+    {
+        Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize * scale, zoomOutMin);
+    }
+
+    private void zoomMouseWheel(float increment)
     {
         Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize - increment, zoomOutMin);
     }
