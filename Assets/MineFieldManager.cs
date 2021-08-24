@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class MineFieldManager : MonoBehaviour
 {
-    [SerializeField] private int rows = 10;
-    [SerializeField] private int columns = 10;
+    private int rows;
+    private int columns;
     [SerializeField] private Object defaultReference;
     [SerializeField] private Object emptyReference;
     [SerializeField] private Object mineReference;
@@ -18,7 +18,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private Object Proximity7Reference;
     [SerializeField] private Object Proximity8Reference;
     [SerializeField] private float tileSize = 1;
-    [SerializeField] private int mineCount = 10;
+    private int mineCount = 10;
     [SerializeField] private float longPressDurationInSeconds = 0.5F;
     [SerializeField] private long vibrationDurationInMs = 20;
     private MineField field;
@@ -28,10 +28,14 @@ public class MineFieldManager : MonoBehaviour
     private bool isButtonDown = false;
     private float buttonDownDuration = 0;
     private bool isFirstReveal = true;
+    [SerializeField] private PlayerSettings settings;
 
     void Start()
     {
         Vibration.Init();
+        rows = settings.GetRowCount();
+        columns = settings.GetColumnCount();
+        mineCount = settings.GetMineCount();
         Reset();
         var gridWidth = columns * tileSize;
         var gridHeight = rows * tileSize;
@@ -49,21 +53,6 @@ public class MineFieldManager : MonoBehaviour
         var gameWonText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameWonText.enabled = false;
         isFirstReveal = true;
-    }
-
-    public void SetMineCount(string value)
-    {
-        mineCount = int.Parse(value);
-    }
-
-    public void SetRows(string value)
-    {
-        rows = int.Parse(value);
-    }
-
-    public void SetColumns(string value)
-    {
-        columns = int.Parse(value);
     }
 
     public void setFlagButtonMode(bool value)
