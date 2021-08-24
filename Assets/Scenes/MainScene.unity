@@ -854,6 +854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoomOutMin: 1
   mineFieldmanager: {fileID: 603442756}
+  directionThreshold: 0.1
   longPressDurationInSeconds: 0.4
 --- !u!4 &962776923
 Transform:

@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour
     public float zoomOutMin = 1;
     [SerializeField] MineFieldManager mineFieldmanager;
     private float buttonDownDuration = 0;
-    private float directionThreshold = 0.01F;
+    [SerializeField] private float directionThreshold = 0.01F;
     private bool isButtonDown = false;
     [SerializeField] private float longPressDurationInSeconds = 0.4F;
 
