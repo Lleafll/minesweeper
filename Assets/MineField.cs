@@ -152,33 +152,35 @@ public class MineField
         return tiles[row, column];
     }
 
-    public void RevealAt(int row, int column)
+    public bool RevealAt(int row, int column)
     {
         if (flags[row, column])
         {
-            return;
+            return false;
         }
         if (fog[row, column])
         {
-            ClearFog(row, column);
+            return ClearFog(row, column);
         }
         else
         {
             if (FlagsInProximity(row, column) == (int)tiles[row, column])
             {
-                ClearAround(row, column);
+                return ClearAround(row, column);
             }
         }
+        return false;
     }
 
-    private void ClearFog(int row, int column)
+    private bool ClearFog(int row, int column)
     {
         if (flags[row, column])
         {
-            return;
+            return false;
         }
         fog[row, column] = false;
         ClearAutomatically();
+        return true;
     }
 
 
@@ -206,8 +208,9 @@ public class MineField
         return flagsInProximity;
     }
 
-    private void ClearAround(int row, int column)
+    private bool ClearAround(int row, int column)
     {
+        var clearedSomething = false;
         for (int x = row - 1; x <= row + 1; x++)
         {
             if (x < 0 || x >= rows)
@@ -220,9 +223,10 @@ public class MineField
                 {
                     continue;
                 }
-                ClearFog(x, y);
+                clearedSomething |= ClearFog(x, y);
             }
         }
+        return clearedSomething;
     }
 
     private void ClearAutomatically()
@@ -256,15 +260,16 @@ public class MineField
         }
     }
 
-    public void SetFlag(int row, int column)
+    public bool SetFlag(int row, int column)
     {
         if (fog[row, column])
         {
             flags[row, column] = !flags[row, column];
+            return true;
         }
         else
         {
-            RevealAt(row, column);
+            return RevealAt(row, column);
         }
     }
 

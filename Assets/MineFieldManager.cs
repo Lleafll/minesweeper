@@ -136,14 +136,14 @@ public class MineFieldManager : MonoBehaviour
         {
             return;
         }
-        Vibration.Vibrate(vibrationDurationInMs);
+        var clicked = false;
         if (flagButtonMode == directClick)
         {
-            field.SetFlag(row, column);
+            clicked = field.SetFlag(row, column);
         }
         else
         {
-            field.RevealAt(row, column);
+            clicked = field.RevealAt(row, column);
             if (isFirstReveal)
             {
                 if (field.CheckGameStatus() == GameStatus.Lost)
@@ -153,6 +153,10 @@ public class MineFieldManager : MonoBehaviour
                 }
                 isFirstReveal = false;
             }
+        }
+        if (clicked)
+        {
+            Vibration.Vibrate(vibrationDurationInMs);
         }
         GenerateGrid();
         gameOver = CheckIfGameOver();
