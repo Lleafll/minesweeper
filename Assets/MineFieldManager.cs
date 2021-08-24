@@ -48,6 +48,7 @@ public class MineFieldManager : MonoBehaviour
         mineCount = System.Math.Min(mineCount, rows * columns / 2);
         field = MineField.GenerateRandom(rows, columns, mineCount);
         GenerateGrid();
+        ZoomOut();
         gameOver = false;
         var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
         gameOverText.enabled = false;
@@ -83,6 +84,11 @@ public class MineFieldManager : MonoBehaviour
                 grid[row, column] = tile;
             }
         }
+    }
+
+    private void ZoomOut()
+    {
+        Camera.main.orthographicSize = rows * 0.5F * tileSize * 1.1F;
     }
 
     private GameObject InstantiateTile(Tile tile)
