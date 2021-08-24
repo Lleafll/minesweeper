@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputHandler : MonoBehaviour
 {
@@ -95,6 +96,10 @@ public class InputHandler : MonoBehaviour
     private void ExecuteClick(bool directClick)
     {
         isButtonDown = false;
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         mineFieldmanager.ExecuteClick(directClick);
     }
 
