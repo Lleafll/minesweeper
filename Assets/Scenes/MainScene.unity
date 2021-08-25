@@ -583,22 +583,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656bd8626b4dfa942a3986dfdb8e2335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultReference: {fileID: 1292610183469028623, guid: dc015999c691b754594bad1ce8ded0b8, type: 3}
-  emptyReference: {fileID: 4366485065746032908, guid: 4054fe87ebfe78d44b9bed98e3e7dc8f, type: 3}
-  mineReference: {fileID: 3371629431940761664, guid: 9539edc4df29e5a4b91d6f9481d3983c, type: 3}
-  flagReference: {fileID: 3087362985438816582, guid: 60d58a6bd5988844eafcb1d20141e84d, type: 3}
-  Proximity1Reference: {fileID: 5164067387948755594, guid: 98f1e235da7be624e8e2c631f8acdc5d, type: 3}
-  Proximity2Reference: {fileID: 7470966813886434772, guid: cc725a5a620fd1b4db9edb91d626def1, type: 3}
-  Proximity3Reference: {fileID: 5068500423733970730, guid: e7376720e44432d4a8da7e900cb43b60, type: 3}
-  Proximity4Reference: {fileID: 2733357925330721662, guid: 17492bec6bb21f54796d9bc4eafcfb26, type: 3}
-  Proximity5Reference: {fileID: 3267437770568844135, guid: 29d054a51033781488e644a1baf82b59, type: 3}
-  Proximity6Reference: {fileID: 9078472041221001199, guid: 100b99c67efde494a8cfb18074558987, type: 3}
-  Proximity7Reference: {fileID: 272101563563867381, guid: b020f53f734f83249927e8a1e6a6f3a5, type: 3}
-  Proximity8Reference: {fileID: 203720836678808057, guid: be7fd6a0f6bd020498744579fe30c123, type: 3}
+  defaultReference: {fileID: 11400000, guid: 5aa5f814d767cf0418dc5caa8a5e6ff6, type: 2}
+  emptyReference: {fileID: 11400000, guid: 5aa5f814d767cf0418dc5caa8a5e6ff6, type: 2}
+  mineReference: {fileID: 11400000, guid: 33c9c2b426fc95442a7ff2bc9c6b5579, type: 2}
+  flagReference: {fileID: 11400000, guid: ffc1cf39f9beafc449ef94873b4f6416, type: 2}
+  Proximity1Reference: {fileID: 11400000, guid: a94613ee83ba93448bcc5f453b624223, type: 2}
+  Proximity2Reference: {fileID: 11400000, guid: ea9c5e435c413d64eb50e810bf17fcb4, type: 2}
+  Proximity3Reference: {fileID: 11400000, guid: e4b1c201a79bed140b3613d699fee8c7, type: 2}
+  Proximity4Reference: {fileID: 11400000, guid: f07512432ac22e14289ffacc16066057, type: 2}
+  Proximity5Reference: {fileID: 11400000, guid: dae5625fd101a9449ac636507e3973d5, type: 2}
+  Proximity6Reference: {fileID: 11400000, guid: e36c61f091c28124abe9bf78144a86ea, type: 2}
+  Proximity7Reference: {fileID: 11400000, guid: 5e9fc8e57b9179d4c93ef73d674d6af6, type: 2}
+  Proximity8Reference: {fileID: 11400000, guid: 75e9e744aef1e3440b0e21636c7fdecb, type: 2}
   tileSize: 1
   vibrationDurationInMs: 20
   settings: {fileID: 502471613}
   tryAgainButton: {fileID: 93563690}
+  tileMap: {fileID: 1222448566}
 --- !u!1 &635119822
 GameObject:
   m_ObjectHideFlags: 0
