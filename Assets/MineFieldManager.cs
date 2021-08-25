@@ -1,32 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 public class MineFieldManager : MonoBehaviour
 {
     private int rows;
     private int columns;
-    [SerializeField] private Object defaultReference;
-    [SerializeField] private Object emptyReference;
-    [SerializeField] private Object mineReference;
-    [SerializeField] private Object flagReference;
-    [SerializeField] private Object Proximity1Reference;
-    [SerializeField] private Object Proximity2Reference;
-    [SerializeField] private Object Proximity3Reference;
-    [SerializeField] private Object Proximity4Reference;
-    [SerializeField] private Object Proximity5Reference;
-    [SerializeField] private Object Proximity6Reference;
-    [SerializeField] private Object Proximity7Reference;
-    [SerializeField] private Object Proximity8Reference;
+    [SerializeField] private TileBase defaultReference;
+    [SerializeField] private TileBase emptyReference;
+    [SerializeField] private TileBase mineReference;
+    [SerializeField] private TileBase flagReference;
+    [SerializeField] private TileBase Proximity1Reference;
+    [SerializeField] private TileBase Proximity2Reference;
+    [SerializeField] private TileBase Proximity3Reference;
+    [SerializeField] private TileBase Proximity4Reference;
+    [SerializeField] private TileBase Proximity5Reference;
+    [SerializeField] private TileBase Proximity6Reference;
+    [SerializeField] private TileBase Proximity7Reference;
+    [SerializeField] private TileBase Proximity8Reference;
     [SerializeField] private float tileSize = 1;
     private int mineCount = 10;
     [SerializeField] private long vibrationDurationInMs = 20;
     private MineField field;
-    private GameObject[,] grid;
     private bool gameOver = false;
     private bool flagButtonMode = true;
     private bool isFirstReveal = true;
     [SerializeField] private PlayerSettings settings;
     [SerializeField] private Button tryAgainButton;
+    [SerializeField] private Tilemap tileMap;
 
     void Start()
     {
@@ -62,23 +63,12 @@ public class MineFieldManager : MonoBehaviour
 
     private void GenerateGrid()
     {
-        if (grid != null)
-        {
-            foreach (var g in grid)
-            {
-                Destroy(g);
-            }
-        }
-        grid = new GameObject[rows, columns];
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
             {
                 var tile = InstantiateTile(field.TileAt(row, column));
-                var posX = column * tileSize;
-                var posY = row * -tileSize;
-                tile.transform.position = new Vector2(posX, posY);
-                grid[row, column] = tile;
+                tileMap.SetTile(new Vector3Int(row, column, 0), tile);
             }
         }
     }
@@ -97,34 +87,34 @@ public class MineFieldManager : MonoBehaviour
         }
     }
 
-    private GameObject InstantiateTile(Tile tile)
+    private TileBase InstantiateTile(Tile tile)
     {
         switch (tile)
         {
             case Tile.Empty:
-                return Instantiate(emptyReference, transform) as GameObject;
+                return emptyReference;
             case Tile.Mine:
-                return Instantiate(mineReference, transform) as GameObject;
+                return mineReference;
             case Tile.Proximity1:
-                return Instantiate(Proximity1Reference, transform) as GameObject;
+                return Proximity1Reference;
             case Tile.Proximity2:
-                return Instantiate(Proximity2Reference, transform) as GameObject;
+                return Proximity2Reference;
             case Tile.Proximity3:
-                return Instantiate(Proximity3Reference, transform) as GameObject;
+                return Proximity3Reference;
             case Tile.Proximity4:
-                return Instantiate(Proximity4Reference, transform) as GameObject;
+                return Proximity4Reference;
             case Tile.Proximity5:
-                return Instantiate(Proximity5Reference, transform) as GameObject;
+                return Proximity5Reference;
             case Tile.Proximity6:
-                return Instantiate(Proximity6Reference, transform) as GameObject;
+                return Proximity6Reference;
             case Tile.Proximity7:
-                return Instantiate(Proximity7Reference, transform) as GameObject;
+                return Proximity7Reference;
             case Tile.Proximity8:
-                return Instantiate(Proximity8Reference, transform) as GameObject;
+                return Proximity8Reference;
             case Tile.Fog:
-                return Instantiate(defaultReference, transform) as GameObject;
+                return defaultReference;
             case Tile.Flag:
-                return Instantiate(flagReference, transform) as GameObject;
+                return flagReference;
         }
         throw new System.InvalidOperationException("Tile case not handled");
     }
