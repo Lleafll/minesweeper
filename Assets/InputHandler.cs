@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputHandler : MonoBehaviour
 {
@@ -28,7 +29,10 @@ public class InputHandler : MonoBehaviour
         {
             touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             buttonDownDuration = 0;
-            isButtonDown = true;
+            if (!ClickedOnUI())
+            {
+                isButtonDown = true;
+            }
         }
         if (Input.touchCount == 2)
         {
@@ -94,8 +98,30 @@ public class InputHandler : MonoBehaviour
 
     private void ExecuteClick(bool directClick)
     {
+        if (ClickedOnUI())
+        {
+            return;
+        }
         isButtonDown = false;
         mineFieldmanager.ExecuteClick(directClick);
+    }
+
+    private static bool ClickedOnUI()
+    {
+        // Check mouse
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return true;
+        }
+        // Check touch
+        if (Input.touchCount > 0)
+        {
+            if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void zoom(float scale)
