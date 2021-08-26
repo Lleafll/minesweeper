@@ -21,4 +21,20 @@ public class DynamicTileGeneratorTest
             { Tile.Proximity1, Tile.Proximity1 } };
         Assert.AreEqual(expected, generator.Generate());
     }
+
+    [Test]
+    public void GenerateWithFlags()
+    {
+        var mines = new bool[2, 2] {
+            { true, false },
+            { false, false } };
+        var flags = new bool[2, 2]{
+            { false, true},
+            { false, false} };
+        var generator = new DynamicTileGenerator(mines, flags);
+        var expected = new Tile[2, 2] {
+            { Tile.Mine, Tile.Proximity1 },
+            { Tile.Empty, Tile.Empty } };
+        Assert.AreEqual(expected, generator.Generate());
+    }
 }

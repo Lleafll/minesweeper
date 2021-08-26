@@ -36,6 +36,10 @@ public class DynamicTileGenerator : ITileGenerator
                 {
                     IncrementAround(tiles, row, column);
                 }
+                if (flags[row, column])
+                {
+                    DecrementAround(tiles, row, column);
+                }
             }
         }
         return tiles;
@@ -73,5 +77,43 @@ public class DynamicTileGenerator : ITileGenerator
             return tile;
         }
         return (Tile)(((int)tile) + 1);
+    }
+
+    static private void DecrementAround(Tile[,] tiles, int row, int column)
+    {
+        var rows = tiles.GetLength(0);
+        var columns = tiles.GetLength(1);
+        for (int x = row - 1; x <= row + 1; x++)
+        {
+            if (x < 0 || x >= rows)
+            {
+                continue;
+            }
+            for (int y = column - 1; y <= column + 1; y++)
+            {
+                if (y < 0 || y >= columns)
+                {
+                    continue;
+                }
+                if (x == row && y == column)
+                {
+                    continue;
+                }
+                tiles[x, y] = Decrement(tiles[x, y]);
+            }
+        }
+    }
+
+    static private Tile Decrement(Tile tile)
+    {
+        if (tile == Tile.Mine)
+        {
+            return tile;
+        }
+        if (tile == Tile.Empty)
+        {
+            return tile;
+        }
+        return (Tile)(((int)tile) - 1);
     }
 }
