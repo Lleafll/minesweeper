@@ -21,7 +21,7 @@ public class MineFieldManager : MonoBehaviour
     private const float tileSize = 1;
     private int mineCount = 10;
     [SerializeField] private long vibrationDurationInMs = 20;
-    private MineField field;
+    private ClassicMineField field;
     private bool gameOver = false;
     private bool flagButtonMode = true;
     private bool isFirstReveal = true;

@@ -25,7 +25,7 @@ public enum GameStatus
     Lost
 }
 
-public class MineField
+public class ClassicMineField
 {
     private Tile[,] tiles;
     public int rows { get; private set; }
@@ -33,7 +33,7 @@ public class MineField
     private bool[,] fog;
     private bool[,] flags;
 
-    public MineField(bool[,] mines)
+    public ClassicMineField(bool[,] mines)
     {
         rows = mines.GetLength(0);
         columns = mines.GetLength(1);
@@ -42,7 +42,7 @@ public class MineField
         GenerateFlags();
     }
 
-    public static MineField GenerateRandom(int rows, int columns, int mineCount)
+    public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount)
     {
         var mines = new bool[rows, columns];
         for (int row = 0; row < rows; row++)
@@ -63,7 +63,7 @@ public class MineField
                 --mineCount;
             }
         }
-        return new MineField(mines);
+        return new ClassicMineField(mines);
     }
 
     private void GenerateTiles(bool[,] mines)
