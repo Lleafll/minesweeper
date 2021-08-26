@@ -68,7 +68,7 @@ public class MineFieldManager : MonoBehaviour
             for (int column = 0; column < columns; column++)
             {
                 var tile = InstantiateTile(field.TileAt(row, column));
-                tileMap.SetTile(new Vector3Int(row, column, 0), tile);
+                tileMap.SetTile(new Vector3Int(column, -row, 0), tile);
             }
         }
     }
