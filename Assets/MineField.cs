@@ -235,33 +235,43 @@ public class MineField
 
     private void ClearAutomatically()
     {
-        for (int row = 0; row < rows; row++)
+        var changedSomething = false;
+        do
         {
-            for (int column = 0; column < columns; column++)
+            changedSomething = false;
+            for (int row = 0; row < rows; row++)
             {
-                if (!fog[row, column] && tiles[row, column] == Tile.Empty)
+                for (int column = 0; column < columns; column++)
                 {
-                    for (int x = row - 1; x <= row + 1; x++)
+                    if (!fog[row, column] && tiles[row, column] == Tile.Empty)
                     {
-                        if (x < 0 || x >= rows)
+                        for (int x = row - 1; x <= row + 1; x++)
                         {
-                            continue;
-                        }
-                        for (int y = column - 1; y <= column + 1; y++)
-                        {
-                            if (y < 0 || y >= columns)
+                            if (x < 0 || x >= rows)
                             {
                                 continue;
                             }
-                            if (fog[x, y])
+                            for (int y = column - 1; y <= column + 1; y++)
                             {
-                                RevealAt(x, y);
+                                if (y < 0 || y >= columns)
+                                {
+                                    continue;
+                                }
+                                if (x == row && y == column)
+                                {
+                                    continue;
+                                }
+                                if (fog[x, y] && !flags[x, y])
+                                {
+                                    fog[x, y] = false;
+                                    changedSomething = true;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
+        } while (changedSomething);
     }
 
     public bool SetFlag(int row, int column)
