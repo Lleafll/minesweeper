@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-public class MineFieldTest
+public class ClassicMineFieldTest
 {
     [Test]
     public void TestTileAtReturnsNullInitially()
     {
         var mines = new bool[1, 1];
         mines[0, 0] = true;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         Assert.AreEqual(Tile.Fog, mineField.TileAt(0, 0));
     }
 
@@ -18,7 +18,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = true;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(Tile.Mine, mineField.TileAt(0, 0));
     }
@@ -28,7 +28,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = true;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         Assert.AreEqual(Tile.Flag, mineField.TileAt(0, 0));
     }
@@ -38,7 +38,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = false;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         mineField.SetFlag(0, 0);
         Assert.AreEqual(Tile.Empty, mineField.TileAt(0, 0));
@@ -49,7 +49,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = true;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.RevealAt(0, 0);
         mineField.SetFlag(0, 0);
@@ -61,7 +61,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = true;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.SetFlag(0, 0);
         Assert.AreEqual(Tile.Fog, mineField.TileAt(0, 0));
@@ -75,7 +75,7 @@ public class MineFieldTest
         mines[0, 1] = false;
         mines[1, 0] = false;
         mines[1, 1] = false;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(Tile.Empty, mineField.TileAt(0, 0));
         Assert.AreEqual(Tile.Empty, mineField.TileAt(0, 1));
@@ -91,7 +91,7 @@ public class MineFieldTest
         mines[0, 1] = false;
         mines[1, 0] = false;
         mines[1, 1] = false;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.RevealAt(0, 1);
         mineField.RevealAt(0, 1);
@@ -109,7 +109,7 @@ public class MineFieldTest
         mines[0, 1] = false;
         mines[1, 0] = false;
         mines[1, 1] = false;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.RevealAt(0, 1);
         mineField.SetFlag(0, 1);
@@ -124,7 +124,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = false;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         Assert.AreEqual(GameStatus.Running, mineField.CheckGameStatus());
     }
 
@@ -133,7 +133,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = true;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(GameStatus.Lost, mineField.CheckGameStatus());
     }
@@ -143,7 +143,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = false;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(GameStatus.Won, mineField.CheckGameStatus());
     }
@@ -153,7 +153,7 @@ public class MineFieldTest
     {
         var mines = new bool[1, 1];
         mines[0, 0] = false;
-        var mineField = new MineField(mines);
+        var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         var changed = mineField.RevealAt(0, 0);
         Assert.IsFalse(changed);

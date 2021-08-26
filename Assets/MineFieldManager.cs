@@ -49,7 +49,7 @@ public class MineFieldManager : MonoBehaviour
     public void Reset()
     {
         mineCount = System.Math.Min(mineCount, rows * columns / 2);
-        field = MineField.GenerateRandom(rows, columns, mineCount);
+        field = ClassicMineField.GenerateRandom(rows, columns, mineCount);
         GenerateGrid();
         ZoomOut();
         gameOver = false;
