@@ -126,6 +126,10 @@ public class MineFieldManager : MonoBehaviour
 
     public void ExecuteClick(bool directClick)
     {
+        if (gameOver)
+        {
+            return;
+        }
         var (row, column) = getClickedRowAndColumn();
         if (row < 0 || column < 0 || row >= rows || column >= columns)
         {
