@@ -36,6 +36,11 @@ public class MineFieldManager : MonoBehaviour
         columns = settings.GetColumnCount();
         mineCount = settings.GetMineCount();
         Reset();
+        CenterCamera();
+    }
+
+    private void CenterCamera()
+    {
         var gridWidth = columns * tileSize;
         var gridHeight = rows * tileSize;
         Camera.main.transform.Translate(new Vector3(gridWidth / 2 - tileSize / 2, -gridHeight / 2 + tileSize / 2, 0));
