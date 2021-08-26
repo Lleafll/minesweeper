@@ -595,7 +595,6 @@ MonoBehaviour:
   Proximity6Reference: {fileID: 11400000, guid: e36c61f091c28124abe9bf78144a86ea, type: 2}
   Proximity7Reference: {fileID: 11400000, guid: 5e9fc8e57b9179d4c93ef73d674d6af6, type: 2}
   Proximity8Reference: {fileID: 11400000, guid: 75e9e744aef1e3440b0e21636c7fdecb, type: 2}
-  tileSize: 1
   vibrationDurationInMs: 20
   settings: {fileID: 502471613}
   tryAgainButton: {fileID: 93563690}
@@ -1050,7 +1049,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileAnchor: {x: 0, y: 0, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
