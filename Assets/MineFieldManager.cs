@@ -18,7 +18,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private TileBase Proximity6Reference;
     [SerializeField] private TileBase Proximity7Reference;
     [SerializeField] private TileBase Proximity8Reference;
-    [SerializeField] private float tileSize = 1;
+    private const float tileSize = 1;
     private int mineCount = 10;
     [SerializeField] private long vibrationDurationInMs = 20;
     private MineField field;
