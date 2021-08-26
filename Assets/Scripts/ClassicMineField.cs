@@ -32,17 +32,26 @@ public class ClassicMineField
     public int columns { get; private set; }
     private bool[,] fog;
     private bool[,] flags;
+    private ITileGenerator generator;
 
-    public ClassicMineField(bool[,] mines)
+    public ClassicMineField(bool[,] mines, bool staticTiles = true)
     {
         rows = mines.GetLength(0);
         columns = mines.GetLength(1);
-        GenerateTiles(mines);
         GenerateFog();
         GenerateFlags();
+        if (staticTiles)
+        {
+            generator = new StaticTileGenerator(mines);
+        }
+        else
+        {
+            generator = new DynamicTileGenerator(mines, flags);
+        }
+        GenerateTiles();
     }
 
-    public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount)
+    public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount, bool staticTiles)
     {
         var mines = new bool[rows, columns];
         for (int row = 0; row < rows; row++)
@@ -63,12 +72,11 @@ public class ClassicMineField
                 --mineCount;
             }
         }
-        return new ClassicMineField(mines);
+        return new ClassicMineField(mines, staticTiles);
     }
 
-    private void GenerateTiles(bool[,] mines)
+    private void GenerateTiles()
     {
-        var generator = new StaticTileGenerator(mines);
         tiles = generator.Generate();
     }
 
@@ -236,6 +244,7 @@ public class ClassicMineField
         if (fog[row, column])
         {
             flags[row, column] = !flags[row, column];
+            GenerateTiles();
             return true;
         }
         else

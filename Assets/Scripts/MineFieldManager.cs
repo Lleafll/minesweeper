@@ -28,6 +28,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private PlayerSettings settings;
     [SerializeField] private Button tryAgainButton;
     [SerializeField] private Tilemap tileMap;
+    [SerializeField] private bool staticTiles = false;
 
     void Start()
     {
@@ -49,7 +50,7 @@ public class MineFieldManager : MonoBehaviour
     public void Reset()
     {
         mineCount = System.Math.Min(mineCount, rows * columns / 2);
-        field = ClassicMineField.GenerateRandom(rows, columns, mineCount);
+        field = ClassicMineField.GenerateRandom(rows, columns, mineCount, staticTiles);
         GenerateGrid();
         ZoomOut();
         gameOver = false;
