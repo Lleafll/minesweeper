@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class StaticTileGeneratorTest
+public class DynamicTileGeneratorTest
 {
     [Test]
     public void Generate()
@@ -12,7 +12,10 @@ public class StaticTileGeneratorTest
         var mines = new bool[2, 2] {
             { true, false },
             { false, false } };
-        var generator = new StaticTileGenerator(mines);
+        var flags = new bool[2, 2]{
+            { false, false},
+            { false, false} };
+        var generator = new DynamicTileGenerator(mines, flags);
         var expected = new Tile[2, 2] {
             { Tile.Mine, Tile.Proximity1 },
             { Tile.Proximity1, Tile.Proximity1 } };
