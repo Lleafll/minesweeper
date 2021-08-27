@@ -587,6 +587,7 @@ MonoBehaviour:
   emptyReference: {fileID: 11400000, guid: 5aa5f814d767cf0418dc5caa8a5e6ff6, type: 2}
   mineReference: {fileID: 11400000, guid: 33c9c2b426fc95442a7ff2bc9c6b5579, type: 2}
   flagReference: {fileID: 11400000, guid: ffc1cf39f9beafc449ef94873b4f6416, type: 2}
+  Proximity0Reference: {fileID: 11400000, guid: 885364d0bfc9c3f498dce149db9fe414, type: 2}
   Proximity1Reference: {fileID: 11400000, guid: a94613ee83ba93448bcc5f453b624223, type: 2}
   Proximity2Reference: {fileID: 11400000, guid: ea9c5e435c413d64eb50e810bf17fcb4, type: 2}
   Proximity3Reference: {fileID: 11400000, guid: e4b1c201a79bed140b3613d699fee8c7, type: 2}
@@ -599,6 +600,7 @@ MonoBehaviour:
   settings: {fileID: 502471613}
   tryAgainButton: {fileID: 93563690}
   tileMap: {fileID: 1222448566}
+  staticTiles: 0
 --- !u!1 &635119822
 GameObject:
   m_ObjectHideFlags: 0

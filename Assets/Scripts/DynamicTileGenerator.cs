@@ -76,6 +76,10 @@ public class DynamicTileGenerator : ITileGenerator
         {
             return tile;
         }
+        if (tile == Tile.Empty)
+        {
+            return Tile.Proximity1;
+        }
         return (Tile)(((int)tile) + 1);
     }
 

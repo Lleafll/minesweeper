@@ -10,6 +10,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private TileBase emptyReference;
     [SerializeField] private TileBase mineReference;
     [SerializeField] private TileBase flagReference;
+    [SerializeField] private TileBase Proximity0Reference;
     [SerializeField] private TileBase Proximity1Reference;
     [SerializeField] private TileBase Proximity2Reference;
     [SerializeField] private TileBase Proximity3Reference;
@@ -101,6 +102,8 @@ public class MineFieldManager : MonoBehaviour
                 return emptyReference;
             case Tile.Mine:
                 return mineReference;
+            case Tile.Proximity0:
+                return Proximity0Reference;
             case Tile.Proximity1:
                 return Proximity1Reference;
             case Tile.Proximity2:

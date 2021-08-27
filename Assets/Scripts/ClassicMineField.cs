@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum Tile
 {
-    Empty = 0,
+    Empty = -1,
+    Proximity0 = 0,
     Proximity1 = 1,
     Proximity2 = 2,
     Proximity3 = 3,
