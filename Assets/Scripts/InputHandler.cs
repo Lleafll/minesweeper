@@ -10,6 +10,7 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private float directionThreshold = 0.01F;
     private bool isButtonDown = false;
     [SerializeField] private float longPressDurationInSeconds = 0.4F;
+    [SerializeField] private int maxCameraSize = 50;
 
     void Update()
     {
@@ -127,10 +128,12 @@ public class InputHandler : MonoBehaviour
     private void zoom(float scale)
     {
         Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize * scale, zoomOutMin);
+        Camera.main.orthographicSize = System.Math.Min(maxCameraSize, Camera.main.orthographicSize);
     }
 
     private void zoomMouseWheel(float increment)
     {
         Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize - increment, zoomOutMin);
+        Camera.main.orthographicSize = System.Math.Min(maxCameraSize, Camera.main.orthographicSize);
     }
 }

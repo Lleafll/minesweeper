@@ -30,6 +30,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private Button tryAgainButton;
     [SerializeField] private Tilemap tileMap;
     [SerializeField] private bool staticTiles = false;
+    [SerializeField] private int maxCameraSize = 50;
 
     void Start()
     {
@@ -92,6 +93,7 @@ public class MineFieldManager : MonoBehaviour
         {
             Camera.main.orthographicSize *= necessaryWidth / camWidth;
         }
+        Camera.main.orthographicSize = System.Math.Min(maxCameraSize, Camera.main.orthographicSize);
     }
 
     private TileBase InstantiateTile(Tile tile)
