@@ -600,7 +600,7 @@ MonoBehaviour:
   settings: {fileID: 502471613}
   tryAgainButton: {fileID: 93563690}
   tileMap: {fileID: 1222448566}
-  staticTiles: 0
+  staticTiles: 1
 --- !u!1 &635119822
 GameObject:
   m_ObjectHideFlags: 0

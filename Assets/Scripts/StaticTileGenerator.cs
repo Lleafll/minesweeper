@@ -53,7 +53,7 @@ public class StaticTileGenerator : ITileGenerator
                         }
                     }
                 }
-                tiles[row, column] = (Tile)minesInProximity;
+                tiles[row, column] = minesInProximity == 0 ? Tile.Empty : (Tile)minesInProximity;
             }
         }
         return tiles;
