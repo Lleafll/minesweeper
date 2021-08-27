@@ -147,7 +147,7 @@ public class ClassicMineField
         if (fog[row, column])
         {
             fog[row, column] = false;
-            ClearAutomatically();
+            ClearAutomatically(row, column);
             return true;
         }
         return false;
@@ -199,45 +199,40 @@ public class ClassicMineField
         return clearedSomething;
     }
 
-    private void ClearAutomatically()
+    private void ClearAutomatically(int initialRow, int initialColumn)
     {
-        var changedSomething = false;
-        do
+        var positions = new Queue<(int, int)>();
+        positions.Enqueue((initialRow, initialColumn));
+        while (positions.Count != 0)
         {
-            changedSomething = false;
-            for (int row = 0; row < rows; row++)
+            var (row, column) = positions.Dequeue();
+            if (!fog[row, column] && tiles[row, column] == Tile.Empty)
             {
-                for (int column = 0; column < columns; column++)
+                for (int x = row - 1; x <= row + 1; x++)
                 {
-                    if (!fog[row, column] && tiles[row, column] == Tile.Empty)
+                    if (x < 0 || x >= rows)
                     {
-                        for (int x = row - 1; x <= row + 1; x++)
+                        continue;
+                    }
+                    for (int y = column - 1; y <= column + 1; y++)
+                    {
+                        if (y < 0 || y >= columns)
                         {
-                            if (x < 0 || x >= rows)
-                            {
-                                continue;
-                            }
-                            for (int y = column - 1; y <= column + 1; y++)
-                            {
-                                if (y < 0 || y >= columns)
-                                {
-                                    continue;
-                                }
-                                if (x == row && y == column)
-                                {
-                                    continue;
-                                }
-                                if (fog[x, y] && !flags[x, y])
-                                {
-                                    fog[x, y] = false;
-                                    changedSomething = true;
-                                }
-                            }
+                            continue;
+                        }
+                        if (x == row && y == column)
+                        {
+                            continue;
+                        }
+                        if (fog[x, y] && !flags[x, y])
+                        {
+                            fog[x, y] = false;
+                            positions.Enqueue((x, y));
                         }
                     }
                 }
             }
-        } while (changedSomething);
+        }
     }
 
     public bool SetFlag(int row, int column)
