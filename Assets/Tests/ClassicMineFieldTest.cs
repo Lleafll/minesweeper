@@ -102,7 +102,7 @@ public class ClassicMineFieldTest
     }
 
     [Test]
-    public void TestRevealWhenSettingGlagOnNumber()
+    public void TestRevealWhenSettingFlagOnNumber()
     {
         var mines = new bool[2, 2];
         mines[0, 0] = true;
@@ -117,6 +117,22 @@ public class ClassicMineFieldTest
         Assert.AreEqual(Tile.Proximity1, mineField.TileAt(0, 1));
         Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 0));
         Assert.AreEqual(Tile.Proximity1, mineField.TileAt(1, 1));
+    }
+
+    [Test]
+    public void TestRevealWhenSettingFlagOnNumberWhenDynamic()
+    {
+        var mines = new bool[2, 2] {
+            { true, false },
+            { false, false } };
+        var mineField = new ClassicMineField(mines, false);
+        mineField.SetFlag(0, 0);
+        mineField.RevealAt(0, 1);
+        mineField.SetFlag(0, 1);
+        Assert.AreEqual(Tile.Flag, mineField.TileAt(0, 0));
+        Assert.AreEqual(Tile.Proximity0, mineField.TileAt(0, 1));
+        Assert.AreEqual(Tile.Proximity0, mineField.TileAt(1, 0));
+        Assert.AreEqual(Tile.Proximity0, mineField.TileAt(1, 1));
     }
 
     [Test]

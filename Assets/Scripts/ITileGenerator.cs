@@ -1,4 +1,6 @@
 public interface ITileGenerator
 {
-    Tile[,] Generate();
+    public Tile[,] Generate();
+
+    public int MinesInProximity(int row, int column);
 }

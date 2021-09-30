@@ -45,6 +45,32 @@ public class DynamicTileGenerator : ITileGenerator
         return tiles;
     }
 
+    public int MinesInProximity(int row, int column)
+    {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        int minesInProximity = 0;
+        for (int x = row - 1; x <= row + 1; x++)
+        {
+            if (x < 0 || x >= rows)
+            {
+                continue;
+            }
+            for (int y = column - 1; y <= column + 1; y++)
+            {
+                if (y < 0 || y >= columns)
+                {
+                    continue;
+                }
+                if (mines[x, y])
+                {
+                    minesInProximity++;
+                }
+            }
+        }
+        return minesInProximity;
+    }
+
     static private void IncrementAround(Tile[,] tiles, int row, int column)
     {
         var rows = tiles.GetLength(0);

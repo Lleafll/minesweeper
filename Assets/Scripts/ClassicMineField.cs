@@ -130,7 +130,7 @@ public class ClassicMineField
         }
         else
         {
-            if (FlagsInProximity(row, column) == (int)tiles[row, column])
+            if (FlagsInProximity(row, column) == generator.MinesInProximity(row, column))
             {
                 return ClearAround(row, column);
             }
