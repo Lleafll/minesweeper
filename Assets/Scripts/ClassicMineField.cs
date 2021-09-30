@@ -82,28 +82,50 @@ public class ClassicMineField
 
     public static ClassicMineField GenerateRandomIrregular(int rows, int columns, int mineCount, bool staticTiles)
     {
-        var width = UnityEngine.Random.Range(columns / 2, columns);
-        var start = UnityEngine.Random.Range(0, columns / 2);
         var mines = new Tile[rows, columns];
-        for (int row = 0; row < rows; row++)
         {
-            width = Math.Min(Math.Max(width, columns / 2 - 1), columns);
-            start = Math.Min(Math.Max(start, 0), columns / 2 - 1);
-            for (int column = 0; column < start; column++)
+            var width = UnityEngine.Random.Range(columns / 2, columns);
+            var width_start = UnityEngine.Random.Range(0, columns / 2);
+            for (int row = 0; row < rows; row++)
             {
-                mines[row, column] = Tile.Inaccessible;
+                width = Math.Min(Math.Max(width, columns / 2 - 1), columns);
+                width_start = Math.Min(Math.Max(width_start, 0), columns / 2 - 1);
+                for (int column = 0; column < width_start; column++)
+                {
+                    mines[row, column] = Tile.Inaccessible;
+                }
+                var width_end = Math.Min(width_start + width, columns);
+                for (int column = width_start; column < width_end; column++)
+                {
+                    mines[row, column] = Tile.Empty;
+                }
+                for (int column = width_end; column < columns; column++)
+                {
+                    mines[row, column] = Tile.Inaccessible;
+                }
+                width -= UnityEngine.Random.Range(-1, 2);
+                width_start -= UnityEngine.Random.Range(-1, 2);
             }
-            var end = Math.Min(start + width, columns);
-            for (int column = start; column < end; column++)
+        }
+        {
+            var height = UnityEngine.Random.Range(rows / 2, rows);
+            var height_start = UnityEngine.Random.Range(0, rows / 2);
+            for (int column = 0; column < columns; column++)
             {
-                mines[row, column] = Tile.Empty;
+                height = Math.Min(Math.Max(height, rows / 2 - 1), rows);
+                height_start = Math.Min(Math.Max(height_start, 0), rows / 2 - 1);
+                for (int row = 0; row < height_start; row++)
+                {
+                    mines[row, column] = Tile.Inaccessible;
+                }
+                var height_end = Math.Min(height_start + height, rows);
+                for (int row = height_end; row < rows; row++)
+                {
+                    mines[row, column] = Tile.Inaccessible;
+                }
+                height -= UnityEngine.Random.Range(-1, 2);
+                height_start -= UnityEngine.Random.Range(-1, 2);
             }
-            for (int column = end; column < columns; column++)
-            {
-                mines[row, column] = Tile.Inaccessible;
-            }
-            width -= UnityEngine.Random.Range(-1, 2);
-            start -= UnityEngine.Random.Range(-1, 2);
         }
         PopulateWithMines(mines, mineCount);
         return new ClassicMineField(mines, staticTiles);
