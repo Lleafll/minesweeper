@@ -41,7 +41,6 @@ public class ClassicMineField
     {
         rows = mines.GetLength(0);
         columns = mines.GetLength(1);
-        GenerateFog();
         GenerateFlags();
         if (staticTiles)
         {
@@ -52,6 +51,7 @@ public class ClassicMineField
             generator = new DynamicTileGenerator(mines, flags);
         }
         GenerateTiles();
+        GenerateFog();
     }
 
     public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount, bool staticTiles, bool rectangular)
@@ -82,8 +82,8 @@ public class ClassicMineField
 
     public static ClassicMineField GenerateRandomIrregular(int rows, int columns, int mineCount, bool staticTiles)
     {
-        var width = UnityEngine.Random.Range(rows / 2, rows);
-        var start = UnityEngine.Random.Range(0, rows / 2);
+        var width = UnityEngine.Random.Range(columns / 2, columns);
+        var start = UnityEngine.Random.Range(0, columns / 2);
         var mines = new Tile[rows, columns];
         for (int row = 0; row < rows; row++)
         {
@@ -100,8 +100,10 @@ public class ClassicMineField
             }
             for (int column = end; column < columns; column++)
             {
-                mines[rows, column] = Tile.Inaccessible;
+                mines[row, column] = Tile.Inaccessible;
             }
+            width -= UnityEngine.Random.Range(-1, 2);
+            start -= UnityEngine.Random.Range(-1, 2);
         }
         PopulateWithMines(mines, mineCount);
         return new ClassicMineField(mines, staticTiles);
@@ -136,7 +138,7 @@ public class ClassicMineField
         {
             for (int column = 0; column < columns; column++)
             {
-                fog[row, column] = true;
+                fog[row, column] = tiles[row, column] != Tile.Inaccessible;
             }
         }
     }

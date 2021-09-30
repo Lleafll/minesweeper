@@ -174,4 +174,15 @@ public class ClassicMineFieldTest
         var changed = mineField.RevealAt(0, 0);
         Assert.IsFalse(changed);
     }
+
+    [Test]
+    public void TestInaccessibleFields()
+    {
+        var mines = new Tile[2, 2] {
+            {Tile.Mine, Tile.Inaccessible },
+            {Tile.Inaccessible, Tile.Empty } };
+        var mineField = new ClassicMineField(mines);
+        Assert.AreEqual(Tile.Inaccessible, mineField.TileAt(0, 1));
+        Assert.AreEqual(Tile.Inaccessible, mineField.TileAt(1, 0));
+    }
 }

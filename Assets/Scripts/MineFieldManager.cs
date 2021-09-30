@@ -97,10 +97,12 @@ public class MineFieldManager : MonoBehaviour
         Camera.main.orthographicSize = System.Math.Min(maxCameraSize, Camera.main.orthographicSize);
     }
 
-    private TileBase InstantiateTile(Tile tile)
+    private TileBase? InstantiateTile(Tile tile)
     {
         switch (tile)
         {
+            case Tile.Inaccessible:
+                return null;
             case Tile.Empty:
                 return emptyReference;
             case Tile.Mine:

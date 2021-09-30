@@ -37,6 +37,10 @@ public class StaticTileGenerator : ITileGenerator
                 {
                     continue;
                 }
+                if (tiles[row, column] == Tile.Inaccessible)
+                {
+                    continue;
+                }
                 var minesInProximity = 0;
                 for (int x = row - 1; x <= row + 1; x++)
                 {
