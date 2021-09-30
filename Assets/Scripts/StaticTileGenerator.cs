@@ -15,16 +15,19 @@ public class StaticTileGenerator : ITileGenerator
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
-            {
-                if (mines[row, column] == Tile.Mine)
+
+                switch (mines[row, column])
                 {
-                    tiles[row, column] = Tile.Mine;
+                    case Tile.Mine:
+                        tiles[row, column] = Tile.Mine;
+                        break;
+                    case Tile.Inaccessible:
+                        tiles[row, column] = Tile.Inaccessible;
+                        break;
+                    default:
+                        tiles[row, column] = Tile.Empty;
+                        break;
                 }
-                else
-                {
-                    tiles[row, column] = Tile.Empty;
-                }
-            }
         }
         for (int row = 0; row < rows; row++)
         {
