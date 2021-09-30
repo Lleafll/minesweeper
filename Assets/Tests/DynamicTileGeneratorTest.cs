@@ -9,9 +9,9 @@ public class DynamicTileGeneratorTest
     [Test]
     public void Generate()
     {
-        var mines = new bool[2, 2] {
-            { true, false },
-            { false, false } };
+        var mines = new Tile[2, 2] {
+            { Tile.Mine, Tile.Empty },
+            { Tile.Empty, Tile.Empty } };
         var flags = new bool[2, 2]{
             { false, false},
             { false, false} };
@@ -25,9 +25,9 @@ public class DynamicTileGeneratorTest
     [Test]
     public void GenerateWithFlags()
     {
-        var mines = new bool[2, 2] {
-            { true, false },
-            { false, false } };
+        var mines = new Tile[2, 2] {
+            { Tile.Mine, Tile.Empty },
+            { Tile.Empty, Tile.Empty } };
         var flags = new bool[2, 2]{
             { false, true},
             { false, false} };

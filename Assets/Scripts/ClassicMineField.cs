@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum Tile
 {
+    Inaccessible = -2,
     Empty = -1,
     Proximity0 = 0,
     Proximity1 = 1,
@@ -35,7 +36,7 @@ public class ClassicMineField
     private bool[,] flags;
     private ITileGenerator generator;
 
-    public ClassicMineField(bool[,] mines, bool staticTiles = true)
+    public ClassicMineField(Tile[,] mines, bool staticTiles = true)
     {
         rows = mines.GetLength(0);
         columns = mines.GetLength(1);
@@ -52,28 +53,63 @@ public class ClassicMineField
         GenerateTiles();
     }
 
-    public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount, bool staticTiles)
+    public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount, bool staticTiles, bool rectangular = true)
     {
-        var mines = new bool[rows, columns];
+        if (rectangular)
+        {
+            return GenerateRandomRectangular(rows, columns, mineCount, staticTiles);
+        }
+        else
+        {
+            return GenerateRandomIrregular(rows, columns, mineCount, staticTiles);
+        }
+    }
+
+    public static ClassicMineField GenerateRandomRectangular(int rows, int columns, int mineCount, bool staticTiles)
+    {
+        var mines = new Tile[rows, columns];
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
             {
-                mines[row, column] = false;
+                mines[row, column] = Tile.Empty;
             }
         }
+        PopulateWithMines(mines, mineCount);
+        return new ClassicMineField(mines, staticTiles);
+    }
+
+    public static ClassicMineField GenerateRandomIrregular(int rows, int columns, int mineCount, bool staticTiles)
+    {
+        var width = Random.Range(rows / 2, rows);
+        var start = Random.Range(0, rows / 2);
+        var mines = new Tile[rows, columns];
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                mines[row, column] = Tile.Empty;
+            }
+        }
+        PopulateWithMines(mines, mineCount);
+        return new ClassicMineField(mines, staticTiles);
+    }
+
+    private static void PopulateWithMines(Tile[,] mines, int mineCount)
+    {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
         while (mineCount != 0)
         {
             var index = Random.Range(0, rows * columns);
             var row = index / columns;
             var column = index % columns;
-            if (!mines[row, column])
+            if (mines[row, column] == Tile.Empty)
             {
-                mines[row, column] = true;
+                mines[row, column] = Tile.Mine;
                 --mineCount;
             }
         }
-        return new ClassicMineField(mines, staticTiles);
     }
 
     private void GenerateTiles()

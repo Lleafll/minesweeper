@@ -7,8 +7,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestTileAtReturnsNullInitially()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = true;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Mine;
         var mineField = new ClassicMineField(mines);
         Assert.AreEqual(Tile.Fog, mineField.TileAt(0, 0));
     }
@@ -16,8 +16,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestTileAtReturnsProperTileAfterClicking()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = true;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Mine;
         var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(Tile.Mine, mineField.TileAt(0, 0));
@@ -26,8 +26,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestSetFlagOnFog()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = true;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Mine;
         var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         Assert.AreEqual(Tile.Flag, mineField.TileAt(0, 0));
@@ -36,8 +36,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestSetFlagOnRevealedTile()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = false;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Empty;
         var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         mineField.SetFlag(0, 0);
@@ -47,8 +47,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestFlagPreventsReveal()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = true;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Mine;
         var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.RevealAt(0, 0);
@@ -59,8 +59,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestUnsetFlag()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = true;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Mine;
         var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.SetFlag(0, 0);
@@ -70,11 +70,11 @@ public class ClassicMineFieldTest
     [Test]
     public void TestAutomaticReveal()
     {
-        var mines = new bool[2, 2];
-        mines[0, 0] = false;
-        mines[0, 1] = false;
-        mines[1, 0] = false;
-        mines[1, 1] = false;
+        var mines = new Tile[2, 2];
+        mines[0, 0] = Tile.Empty;
+        mines[0, 1] = Tile.Empty;
+        mines[1, 0] = Tile.Empty;
+        mines[1, 1] = Tile.Empty;
         var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(Tile.Empty, mineField.TileAt(0, 0));
@@ -86,11 +86,11 @@ public class ClassicMineFieldTest
     [Test]
     public void TestRevealWhenClickingOnNumbers()
     {
-        var mines = new bool[2, 2];
-        mines[0, 0] = true;
-        mines[0, 1] = false;
-        mines[1, 0] = false;
-        mines[1, 1] = false;
+        var mines = new Tile[2, 2];
+        mines[0, 0] = Tile.Mine;
+        mines[0, 1] = Tile.Empty;
+        mines[1, 0] = Tile.Empty;
+        mines[1, 1] = Tile.Empty;
         var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.RevealAt(0, 1);
@@ -104,11 +104,11 @@ public class ClassicMineFieldTest
     [Test]
     public void TestRevealWhenSettingFlagOnNumber()
     {
-        var mines = new bool[2, 2];
-        mines[0, 0] = true;
-        mines[0, 1] = false;
-        mines[1, 0] = false;
-        mines[1, 1] = false;
+        var mines = new Tile[2, 2];
+        mines[0, 0] = Tile.Mine;
+        mines[0, 1] = Tile.Empty;
+        mines[1, 0] = Tile.Empty;
+        mines[1, 1] = Tile.Empty;
         var mineField = new ClassicMineField(mines);
         mineField.SetFlag(0, 0);
         mineField.RevealAt(0, 1);
@@ -122,9 +122,9 @@ public class ClassicMineFieldTest
     [Test]
     public void TestRevealWhenSettingFlagOnNumberWhenDynamic()
     {
-        var mines = new bool[2, 2] {
-            { true, false },
-            { false, false } };
+        var mines = new Tile[2, 2] {
+            { Tile.Mine, Tile.Empty},
+            { Tile.Empty, Tile.Empty} };
         var mineField = new ClassicMineField(mines, false);
         mineField.SetFlag(0, 0);
         mineField.RevealAt(0, 1);
@@ -138,8 +138,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestCheckGameStatusRunning()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = false;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Empty;
         var mineField = new ClassicMineField(mines);
         Assert.AreEqual(GameStatus.Running, mineField.CheckGameStatus());
     }
@@ -147,8 +147,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestCheckGameStatusLostWhenMineIsRevealed()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = true;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Mine;
         var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(GameStatus.Lost, mineField.CheckGameStatus());
@@ -157,8 +157,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestCheckGameStatusWonWhenEverythingIsRevealed()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = false;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Empty;
         var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         Assert.AreEqual(GameStatus.Won, mineField.CheckGameStatus());
@@ -167,8 +167,8 @@ public class ClassicMineFieldTest
     [Test]
     public void TestNoChangeWhenRevealingEmptyTile()
     {
-        var mines = new bool[1, 1];
-        mines[0, 0] = false;
+        var mines = new Tile[1, 1];
+        mines[0, 0] = Tile.Empty;
         var mineField = new ClassicMineField(mines);
         mineField.RevealAt(0, 0);
         var changed = mineField.RevealAt(0, 0);

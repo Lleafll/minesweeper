@@ -1,9 +1,9 @@
 public class DynamicTileGenerator : ITileGenerator
 {
-    private bool[,] mines;
+    private Tile[,] mines;
     private bool[,] flags;
 
-    public DynamicTileGenerator(bool[,] mines, bool[,] flags)
+    public DynamicTileGenerator(Tile[,] mines, bool[,] flags)
     {
         this.mines = mines;
         this.flags = flags;
@@ -18,7 +18,7 @@ public class DynamicTileGenerator : ITileGenerator
         {
             for (int column = 0; column < columns; column++)
             {
-                if (mines[row, column])
+                if (mines[row, column] == Tile.Mine)
                 {
                     tiles[row, column] = Tile.Mine;
                 }
@@ -32,7 +32,7 @@ public class DynamicTileGenerator : ITileGenerator
         {
             for (int column = 0; column < columns; column++)
             {
-                if (mines[row, column])
+                if (mines[row, column] == Tile.Mine)
                 {
                     IncrementAround(tiles, row, column);
                 }
@@ -62,7 +62,7 @@ public class DynamicTileGenerator : ITileGenerator
                 {
                     continue;
                 }
-                if (mines[x, y])
+                if (mines[x, y] == Tile.Mine)
                 {
                     minesInProximity++;
                 }

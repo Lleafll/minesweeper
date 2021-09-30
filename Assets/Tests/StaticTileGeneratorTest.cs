@@ -9,9 +9,9 @@ public class StaticTileGeneratorTest
     [Test]
     public void Generate()
     {
-        var mines = new bool[2, 2] {
-            { true, false },
-            { false, false } };
+        var mines = new Tile[2, 2] {
+            { Tile.Mine, Tile.Empty },
+            { Tile.Empty, Tile.Empty } };
         var generator = new StaticTileGenerator(mines);
         var expected = new Tile[2, 2] {
             { Tile.Mine, Tile.Proximity1 },

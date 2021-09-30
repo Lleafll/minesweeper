@@ -1,8 +1,8 @@
 public class StaticTileGenerator : ITileGenerator
 {
-    private bool[,] mines;
+    private Tile[,] mines;
 
-    public StaticTileGenerator(bool[,] mines)
+    public StaticTileGenerator(Tile[,] mines)
     {
         this.mines = mines;
     }
@@ -16,7 +16,7 @@ public class StaticTileGenerator : ITileGenerator
         {
             for (int column = 0; column < columns; column++)
             {
-                if (mines[row, column])
+                if (mines[row, column] == Tile.Mine)
                 {
                     tiles[row, column] = Tile.Mine;
                 }
@@ -76,7 +76,7 @@ public class StaticTileGenerator : ITileGenerator
                 {
                     continue;
                 }
-                if (mines[x, y])
+                if (mines[x, y] == Tile.Mine)
                 {
                     minesInProximity++;
                 }
