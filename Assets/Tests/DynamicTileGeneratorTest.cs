@@ -34,7 +34,7 @@ public class DynamicTileGeneratorTest
         var generator = new DynamicTileGenerator(mines, flags);
         var expected = new Tile[2, 2] {
             { Tile.Mine, Tile.Proximity1 },
-            { Tile.Empty, Tile.Empty } };
+            { Tile.Proximity0, Tile.Proximity0 } };
         Assert.AreEqual(expected, generator.Generate());
     }
 }
