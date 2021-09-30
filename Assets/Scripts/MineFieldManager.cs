@@ -30,6 +30,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private Button tryAgainButton;
     [SerializeField] private Tilemap tileMap;
     [SerializeField] private bool staticTiles = false;
+    [SerializeField] private bool rectangular = true;
     [SerializeField] private int maxCameraSize = 50;
 
     void Start()
@@ -52,7 +53,7 @@ public class MineFieldManager : MonoBehaviour
     public void Reset()
     {
         mineCount = System.Math.Min(mineCount, rows * columns / 2);
-        field = ClassicMineField.GenerateRandom(rows, columns, mineCount, staticTiles);
+        field = ClassicMineField.GenerateRandom(rows, columns, mineCount, staticTiles, rectangular);
         GenerateGrid();
         ZoomOut();
         gameOver = false;

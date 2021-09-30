@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public enum Tile
@@ -53,7 +54,7 @@ public class ClassicMineField
         GenerateTiles();
     }
 
-    public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount, bool staticTiles, bool rectangular = true)
+    public static ClassicMineField GenerateRandom(int rows, int columns, int mineCount, bool staticTiles, bool rectangular)
     {
         if (rectangular)
         {
@@ -81,14 +82,25 @@ public class ClassicMineField
 
     public static ClassicMineField GenerateRandomIrregular(int rows, int columns, int mineCount, bool staticTiles)
     {
-        var width = Random.Range(rows / 2, rows);
-        var start = Random.Range(0, rows / 2);
+        var width = UnityEngine.Random.Range(rows / 2, rows);
+        var start = UnityEngine.Random.Range(0, rows / 2);
         var mines = new Tile[rows, columns];
         for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < columns; column++)
+            width = Math.Min(Math.Max(width, columns / 2 - 1), columns);
+            start = Math.Min(Math.Max(start, 0), columns / 2 - 1);
+            for (int column = 0; column < start; column++)
+            {
+                mines[row, column] = Tile.Inaccessible;
+            }
+            var end = Math.Min(start + width, columns);
+            for (int column = start; column < end; column++)
             {
                 mines[row, column] = Tile.Empty;
+            }
+            for (int column = end; column < columns; column++)
+            {
+                mines[rows, column] = Tile.Inaccessible;
             }
         }
         PopulateWithMines(mines, mineCount);
@@ -101,7 +113,7 @@ public class ClassicMineField
         var columns = mines.GetLength(1);
         while (mineCount != 0)
         {
-            var index = Random.Range(0, rows * columns);
+            var index = UnityEngine.Random.Range(0, rows * columns);
             var row = index / columns;
             var column = index % columns;
             if (mines[row, column] == Tile.Empty)
