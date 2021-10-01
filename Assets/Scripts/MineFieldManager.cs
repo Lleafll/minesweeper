@@ -1,40 +1,47 @@
+#nullable enable
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using System;
 
 public class MineFieldManager : MonoBehaviour
 {
     private int rows;
     private int columns;
-    [SerializeField] private TileBase defaultReference;
-    [SerializeField] private TileBase emptyReference;
-    [SerializeField] private TileBase mineReference;
-    [SerializeField] private TileBase flagReference;
-    [SerializeField] private TileBase Proximity0Reference;
-    [SerializeField] private TileBase Proximity1Reference;
-    [SerializeField] private TileBase Proximity2Reference;
-    [SerializeField] private TileBase Proximity3Reference;
-    [SerializeField] private TileBase Proximity4Reference;
-    [SerializeField] private TileBase Proximity5Reference;
-    [SerializeField] private TileBase Proximity6Reference;
-    [SerializeField] private TileBase Proximity7Reference;
-    [SerializeField] private TileBase Proximity8Reference;
+    [SerializeField] private TileBase? defaultReference;
+    [SerializeField] private TileBase? emptyReference;
+    [SerializeField] private TileBase? mineReference;
+    [SerializeField] private TileBase? flagReference;
+    [SerializeField] private TileBase? Proximity0Reference;
+    [SerializeField] private TileBase? Proximity1Reference;
+    [SerializeField] private TileBase? Proximity2Reference;
+    [SerializeField] private TileBase? Proximity3Reference;
+    [SerializeField] private TileBase? Proximity4Reference;
+    [SerializeField] private TileBase? Proximity5Reference;
+    [SerializeField] private TileBase? Proximity6Reference;
+    [SerializeField] private TileBase? Proximity7Reference;
+    [SerializeField] private TileBase? Proximity8Reference;
     private const float tileSize = 1;
     private int mineCount = 10;
     [SerializeField] private long vibrationDurationInMs = 20;
-    private ClassicMineField field;
+    private ClassicMineField? field;
     private bool gameOver = false;
     private bool flagButtonMode = true;
     private bool isFirstReveal = true;
-    [SerializeField] private PlayerSettings settings;
-    [SerializeField] private Button tryAgainButton;
-    [SerializeField] private Tilemap tileMap;
+    [SerializeField] private PlayerSettings? settings;
+    [SerializeField] private Button? tryAgainButton;
+    [SerializeField] private Tilemap? tileMap;
     [SerializeField] private bool staticTiles = false;
     [SerializeField] private bool rectangular = true;
     [SerializeField] private int maxCameraSize = 50;
 
     void Start()
     {
+        if (settings == null)
+        {
+            throw new InvalidOperationException("settings not initialized");
+        }
         Vibration.Init();
         rows = settings.GetRowCount();
         columns = settings.GetColumnCount();
@@ -52,6 +59,10 @@ public class MineFieldManager : MonoBehaviour
 
     public void Reset()
     {
+        if (tryAgainButton == null)
+        {
+            throw new InvalidOperationException("tryAgainButton not initialized");
+        }
         mineCount = System.Math.Min(mineCount, rows * columns / 2);
         field = ClassicMineField.GenerateRandom(rows, columns, mineCount, staticTiles, rectangular);
         GenerateGrid();
@@ -65,13 +76,16 @@ public class MineFieldManager : MonoBehaviour
         isFirstReveal = true;
     }
 
-    public void setFlagButtonMode(bool value)
-    {
-        flagButtonMode = value;
-    }
-
     private void GenerateGrid()
     {
+        if (field == null)
+        {
+            throw new InvalidOperationException("field not initialized");
+        }
+        if (tileMap == null)
+        {
+            throw new InvalidOperationException("field not initialized");
+        }
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
@@ -135,6 +149,10 @@ public class MineFieldManager : MonoBehaviour
 
     public void ExecuteClick(bool directClick)
     {
+        if (field == null)
+        {
+            throw new InvalidOperationException("field not initialized");
+        }
         if (gameOver)
         {
             return;
@@ -180,6 +198,10 @@ public class MineFieldManager : MonoBehaviour
 
     private bool CheckIfGameOver()
     {
+        if (field == null)
+        {
+            throw new InvalidOperationException("field not initialized");
+        }
         var gameStatus = field.CheckGameStatus();
         switch (gameStatus)
         {
@@ -195,6 +217,10 @@ public class MineFieldManager : MonoBehaviour
 
     private void ShowGameWonScreen()
     {
+        if (tryAgainButton == null)
+        {
+            throw new InvalidOperationException("tryAgainButton not initialized");
+        }
         var gameOverText = GameObject.Find("GameWonScreen").GetComponent<Text>();
         gameOverText.enabled = true;
         tryAgainButton.gameObject.SetActive(true);
@@ -202,6 +228,10 @@ public class MineFieldManager : MonoBehaviour
 
     private void ShowGameLostScreen()
     {
+        if (tryAgainButton == null)
+        {
+            throw new InvalidOperationException("tryAgainButton not initialized");
+        }
         var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
         gameOverText.enabled = true;
         tryAgainButton.gameObject.SetActive(true);
