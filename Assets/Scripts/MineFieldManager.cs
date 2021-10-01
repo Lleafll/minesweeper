@@ -84,7 +84,7 @@ public class MineFieldManager : MonoBehaviour
         }
         if (tileMap == null)
         {
-            throw new InvalidOperationException("field not initialized");
+            throw new InvalidOperationException("tileMap not initialized");
         }
         for (int row = 0; row < rows; row++)
         {
