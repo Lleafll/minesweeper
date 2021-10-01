@@ -88,8 +88,8 @@ public class ClassicMineField
             var width_start = UnityEngine.Random.Range(0, columns / 2);
             for (int row = 0; row < rows; row++)
             {
-                width = Math.Min(Math.Max(width, columns / 2 - 1), columns);
                 width_start = Math.Min(Math.Max(width_start, 0), columns / 2 - 1);
+                width = Math.Min(Math.Max(width, columns / 2 - 1), columns - width_start);
                 for (int column = 0; column < width_start; column++)
                 {
                     mines[row, column] = Tile.Inaccessible;
@@ -112,8 +112,8 @@ public class ClassicMineField
             var height_start = UnityEngine.Random.Range(0, rows / 2);
             for (int column = 0; column < columns; column++)
             {
-                height = Math.Min(Math.Max(height, rows / 2 - 1), rows);
                 height_start = Math.Min(Math.Max(height_start, 0), rows / 2 - 1);
+                height = Math.Min(Math.Max(height, rows / 2 - 1), rows - height_start);
                 for (int row = 0; row < height_start; row++)
                 {
                     mines[row, column] = Tile.Inaccessible;
