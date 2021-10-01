@@ -200,6 +200,10 @@ public class ClassicMineField
         {
             return ClearFog(row, column);
         }
+        if (tiles[row, column] == Tile.Inaccessible)
+        {
+            return false;
+        }
         else
         {
             if (FlagsInProximity(row, column) == generator.MinesInProximity(row, column))

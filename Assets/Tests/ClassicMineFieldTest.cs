@@ -185,4 +185,17 @@ public class ClassicMineFieldTest
         Assert.AreEqual(Tile.Inaccessible, mineField.TileAt(0, 1));
         Assert.AreEqual(Tile.Inaccessible, mineField.TileAt(1, 0));
     }
+
+    [Test]
+    public void TestRevealingInaccessibleFieldDoesNotRevealNeighboringFields()
+    {
+        var mines = new Tile[2, 2] {
+            {Tile.Inaccessible, Tile.Empty },
+            {Tile.Empty, Tile.Empty } };
+        var mineField = new ClassicMineField(mines);
+        mineField.RevealAt(0, 0);
+        Assert.AreEqual(Tile.Fog, mineField.TileAt(0, 1));
+        Assert.AreEqual(Tile.Fog, mineField.TileAt(1, 0));
+        Assert.AreEqual(Tile.Fog, mineField.TileAt(1, 1));
+    }
 }
