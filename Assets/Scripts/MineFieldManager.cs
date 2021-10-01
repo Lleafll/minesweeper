@@ -157,7 +157,7 @@ public class MineFieldManager : MonoBehaviour
         {
             return;
         }
-        var (row, column) = getClickedRowAndColumn();
+        var (row, column) = GetClickedRowAndColumn();
         if (row < 0 || column < 0 || row >= rows || column >= columns)
         {
             return;
@@ -188,7 +188,7 @@ public class MineFieldManager : MonoBehaviour
         gameOver = CheckIfGameOver();
     }
 
-    private (int, int) getClickedRowAndColumn()
+    private (int, int) GetClickedRowAndColumn()
     {
         var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var row = (int)System.Math.Round(mousePosition.y / -tileSize + tileSize / 2 - 0.5);
