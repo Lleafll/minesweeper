@@ -174,7 +174,7 @@ public class MineFieldManager : MonoBehaviour
             {
                 if (field.CheckGameStatus() == GameStatus.Lost)
                 {
-                    Reset();
+                    field.RepopulateWithMinesRandomly();
                     ExecuteClick(directClick);
                 }
                 isFirstReveal = false;

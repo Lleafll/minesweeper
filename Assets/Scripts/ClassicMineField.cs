@@ -30,6 +30,7 @@ public enum GameStatus
 
 public class ClassicMineField
 {
+    private Tile[,] mines;
     private Tile[,] tiles;
     public int rows { get; private set; }
     public int columns { get; private set; }
@@ -39,6 +40,7 @@ public class ClassicMineField
 
     public ClassicMineField(Tile[,] mines, bool staticTiles = true)
     {
+        this.mines = mines;
         rows = mines.GetLength(0);
         columns = mines.GetLength(1);
         GenerateFlags();
@@ -129,6 +131,28 @@ public class ClassicMineField
         }
         PopulateWithMines(mines, mineCount);
         return new ClassicMineField(mines, staticTiles);
+    }
+
+    public void RepopulateWithMinesRandomly()
+    {
+        var mineCount = 0;
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (mines[row, column] == Tile.Mine)
+                {
+                    mineCount++;
+                }
+                if (mines[row, column] != Tile.Inaccessible)
+                {
+                    mines[row, column] = Tile.Empty;
+                }
+            }
+        }
+        PopulateWithMines(mines, mineCount);
+        GenerateTiles();
+        GenerateFog();
     }
 
     private static void PopulateWithMines(Tile[,] mines, int mineCount)
