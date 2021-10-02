@@ -46,6 +46,7 @@ public class MineFieldManager : MonoBehaviour
         rows = settings.GetRowCount();
         columns = settings.GetColumnCount();
         mineCount = settings.GetMineCount();
+        rectangular = !settings.GetIrregularMineField();
         Reset();
         CenterCamera();
     }
