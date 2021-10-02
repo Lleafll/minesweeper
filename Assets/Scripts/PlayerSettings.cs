@@ -7,9 +7,11 @@ public class PlayerSettings : MonoBehaviour
     private const int defaultMineCount = 30;
     private const int defaultRowCount = 15;
     private const int defaultColumnCount = 10;
+    private const int defaultIrregularMineField = 0;
     private const string mineCountKey = "mineCount";
     private const string rowCountKey = "rowCount";
     private const string columnCountKey = "columnCount";
+    private const string irregularMineFieldKey = "irregularMineField";
 
     public void SetMineCount(string mineCount)
     {
@@ -39,5 +41,15 @@ public class PlayerSettings : MonoBehaviour
     public int GetColumnCount()
     {
         return PlayerPrefs.GetInt(columnCountKey, defaultColumnCount);
+    }
+
+    public void SetIrregularMineField(bool irregularMineField)
+    {
+        PlayerPrefs.SetInt(irregularMineFieldKey, irregularMineField ? 1 : 0);
+    }
+
+    public bool GetIrregularMineField()
+    {
+        return PlayerPrefs.GetInt(irregularMineFieldKey, defaultIrregularMineField) == 1;
     }
 }
