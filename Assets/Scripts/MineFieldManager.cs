@@ -77,6 +77,11 @@ public class MineFieldManager : MonoBehaviour
         isFirstReveal = true;
     }
 
+    public void SetFlagButtonMode(bool value)
+    {
+        flagButtonMode = value;
+    }
+
     private void GenerateGrid()
     {
         if (field == null)

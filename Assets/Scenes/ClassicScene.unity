@@ -1141,7 +1141,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1798041434387555592, guid: b42c995499fc84a47975914ad2573919, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3b38045613c88ed48938f92ab9069e0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1427,8 +1427,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 603442756}
-        m_TargetAssemblyTypeName: MineFieldManager, Assembly-CSharp
-        m_MethodName: setFlagButtonMode
+        m_TargetAssemblyTypeName: MineFieldManager, GameAssembly
+        m_MethodName: SetFlagButtonMode
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1541,7 +1541,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2347690314128403440, guid: b42c995499fc84a47975914ad2573919, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 09d6ce4ce9c2ca9418456f50a63f6467, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
