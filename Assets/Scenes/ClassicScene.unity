@@ -493,7 +493,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 0}
+  m_BackGroundColor: {r: 0.10980392, g: 0.40392157, b: 0.5294118, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -601,6 +601,8 @@ MonoBehaviour:
   tryAgainButton: {fileID: 93563690}
   tileMap: {fileID: 1222448566}
   staticTiles: 1
+  rectangular: 1
+  maxCameraSize: 50
 --- !u!1 &635119822
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,6 +860,7 @@ MonoBehaviour:
   mineFieldmanager: {fileID: 603442756}
   directionThreshold: 0.1
   longPressDurationInSeconds: 0.4
+  maxCameraSize: 50
 --- !u!4 &962776923
 Transform:
   m_ObjectHideFlags: 0
