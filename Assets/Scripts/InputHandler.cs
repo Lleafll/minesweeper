@@ -49,7 +49,7 @@ public class InputHandler : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            drag();
+            Drag();
             if (isButtonDown)
             {
                 buttonDownDuration += Time.deltaTime;
@@ -74,7 +74,7 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            drag();
+            Drag();
         }
         if (Input.GetMouseButton(1))
         {
@@ -87,7 +87,7 @@ public class InputHandler : MonoBehaviour
         zoomMouseWheel(Input.GetAxis("Mouse ScrollWheel"));
     }
 
-    private void drag()
+    private void Drag()
     {
         var direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Camera.main.transform.position += direction;
@@ -95,6 +95,10 @@ public class InputHandler : MonoBehaviour
         {
             isButtonDown = false;
         }
+        var position = Camera.main.transform.position;
+        position.x = Mathf.Clamp(position.x, 0, mineFieldmanager.columns);
+        position.y = Mathf.Clamp(position.y, -mineFieldmanager.rows, 0);
+        Camera.main.transform.position = position;
     }
 
     private void ExecuteClick(bool directClick)

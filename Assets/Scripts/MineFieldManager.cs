@@ -7,8 +7,8 @@ using System;
 
 public class MineFieldManager : MonoBehaviour
 {
-    private int rows;
-    private int columns;
+    public int rows { get; private set; }
+    public int columns { get; private set; }
     [SerializeField] private TileBase? defaultReference;
     [SerializeField] private TileBase? emptyReference;
     [SerializeField] private TileBase? mineReference;
@@ -22,7 +22,6 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private TileBase? Proximity6Reference;
     [SerializeField] private TileBase? Proximity7Reference;
     [SerializeField] private TileBase? Proximity8Reference;
-    private const float tileSize = 1;
     private int mineCount = 10;
     [SerializeField] private long vibrationDurationInMs = 20;
     private ClassicMineField? field;
@@ -53,9 +52,9 @@ public class MineFieldManager : MonoBehaviour
 
     private void CenterCamera()
     {
-        var gridWidth = columns * tileSize;
-        var gridHeight = rows * tileSize;
-        Camera.main.transform.Translate(new Vector3(gridWidth / 2 - tileSize / 2, -gridHeight / 2 + tileSize / 2, 0));
+        var gridWidth = columns;
+        var gridHeight = rows;
+        Camera.main.transform.Translate(new Vector3(gridWidth / 2 - 0.5f, -gridHeight / 2 + 0.5f, 0));
     }
 
     public void Reset()
@@ -104,12 +103,12 @@ public class MineFieldManager : MonoBehaviour
 
     private void ZoomOut()
     {
-        Camera.main.orthographicSize = rows * 0.5F * tileSize * 1.1F;
+        Camera.main.orthographicSize = rows * 0.5F * 1.1F;
         var screenAspect = (float)Screen.width / (float)Screen.height;
         var camHalfHeight = Camera.main.orthographicSize;
         var camHalfWidth = screenAspect * camHalfHeight;
         var camWidth = 2.0f * camHalfWidth;
-        var necessaryWidth = columns * tileSize * 1.1F;
+        var necessaryWidth = columns * 1.1F;
         if (camWidth < necessaryWidth)
         {
             Camera.main.orthographicSize *= necessaryWidth / camWidth;
@@ -197,8 +196,8 @@ public class MineFieldManager : MonoBehaviour
     private (int, int) GetClickedRowAndColumn()
     {
         var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var row = (int)System.Math.Round(mousePosition.y / -tileSize + tileSize / 2 - 0.5);
-        var column = (int)System.Math.Round(mousePosition.x / tileSize + tileSize / 2 - 0.5);
+        var row = (int)System.Math.Round(-mousePosition.y);
+        var column = (int)System.Math.Round(mousePosition.x);
         return (row, column);
     }
 
