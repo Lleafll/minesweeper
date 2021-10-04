@@ -129,8 +129,50 @@ public class ClassicMineField
                 height_start -= UnityEngine.Random.Range(-1, 2);
             }
         }
+        RemoveOneTileIslands(mines);
         PopulateWithMines(mines, mineCount);
         return new ClassicMineField(mines, staticTiles);
+    }
+
+    private static void RemoveOneTileIslands(Tile[,] mineField)
+    {
+        var rows = mineField.GetLength(0);
+        var columns = mineField.GetLength(1);
+        for (var row = 0; row < rows; row++)
+        {
+            for (var column = 0; column < columns; column++)
+            {
+                if (mineField[row, column] != Tile.Inaccessible && !HasNeighbor(mineField, row, column))
+                {
+                    mineField[row, column] = Tile.Inaccessible;
+                }
+            }
+        }
+    }
+
+    private static bool HasNeighbor(Tile[,] mineField, int row, int column)
+    {
+        var rows = mineField.GetLength(0);
+        var columns = mineField.GetLength(1);
+        var rowBegin = Math.Max(0, row - 1);
+        var rowEnd = Math.Min(row + 2, rows);
+        var columnBegin = Math.Max(0, column - 1);
+        var columnEnd = Math.Min(column + 2, columns);
+        for (var i = rowBegin; i < rowEnd; i++)
+        {
+            for (var k = columnBegin; k < columnEnd; k++)
+            {
+                if (i == row && k == column)
+                {
+                    continue;
+                }
+                if (mineField[i, k] != Tile.Inaccessible)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void RepopulateWithMinesRandomly()
