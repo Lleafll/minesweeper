@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour
     private bool isButtonDown = false;
     [SerializeField] private float longPressDurationInSeconds = 0.4F;
     [SerializeField] private int maxCameraSize = 50;
+    private bool dragging = false;
 
     void Update()
     {
@@ -29,6 +30,7 @@ public class InputHandler : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            dragging = true;
             buttonDownDuration = 0;
             if (!ClickedOnUI())
             {
@@ -37,6 +39,7 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.touchCount == 2)
         {
+            dragging = false;
             isButtonDown = false;
             var touchZero = Input.GetTouch(0);
             var touchOne = Input.GetTouch(1);
@@ -49,7 +52,10 @@ public class InputHandler : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            Drag();
+            if (dragging)
+            {
+                Drag();
+            }
             if (isButtonDown)
             {
                 buttonDownDuration += Time.deltaTime;
@@ -62,6 +68,7 @@ public class InputHandler : MonoBehaviour
         else if (isButtonDown && Input.GetMouseButtonUp(0))
         {
             ExecuteClick(true);
+            dragging = false;
         }
     }
 
