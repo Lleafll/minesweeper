@@ -34,6 +34,7 @@ public class MineFieldManager : MonoBehaviour
     [SerializeField] private bool staticTiles = false;
     [SerializeField] private bool rectangular = true;
     [SerializeField] private int maxCameraSize = 50;
+    [SerializeField] private Text? remainingMinesText;
 
     void Start()
     {
@@ -63,6 +64,10 @@ public class MineFieldManager : MonoBehaviour
         {
             throw new InvalidOperationException("tryAgainButton not initialized");
         }
+        if (remainingMinesText == null)
+        {
+            throw new InvalidOperationException("remainingMinesText not initialized");
+        }
         mineCount = System.Math.Min(mineCount, rows * columns / 2);
         field = ClassicMineField.GenerateRandom(rows, columns, mineCount, staticTiles, rectangular);
         GenerateGrid();
@@ -74,6 +79,7 @@ public class MineFieldManager : MonoBehaviour
         gameWonText.enabled = false;
         tryAgainButton.gameObject.SetActive(false);
         isFirstReveal = true;
+        remainingMinesText.text = mineCount.ToString();
     }
 
     public void SetFlagButtonMode(bool value)

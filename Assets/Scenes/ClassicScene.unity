@@ -603,6 +603,7 @@ MonoBehaviour:
   staticTiles: 1
   rectangular: 1
   maxCameraSize: 50
+  remainingMinesText: {fileID: 1499388664}
 --- !u!1 &635119822
 GameObject:
   m_ObjectHideFlags: 0
