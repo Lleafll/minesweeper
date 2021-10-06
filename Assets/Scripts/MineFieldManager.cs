@@ -100,6 +100,7 @@ public class MineFieldManager : MonoBehaviour
         {
             throw new InvalidOperationException("tileMap not initialized");
         }
+        tileMap.ClearAllTiles();
         var (rows, columns) = field.Length();
         for (int row = 0; row < rows; row++)
         {
