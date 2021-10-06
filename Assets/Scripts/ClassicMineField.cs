@@ -32,8 +32,6 @@ public class ClassicMineField
 {
     private readonly Tile[,] mines;
     private Tile[,] tiles;
-    public int Rows { get; private set; }
-    public int Columns { get; private set; }
     private bool[,] fog;
     private readonly bool[,] flags;
     private readonly ITileGenerator generator;
@@ -42,9 +40,7 @@ public class ClassicMineField
     public ClassicMineField(Tile[,] mines, bool staticTiles = true)
     {
         this.mines = mines;
-        Rows = mines.GetLength(0);
-        Columns = mines.GetLength(1);
-        mineCount = CountMines();
+        mineCount = CountMines(mines);
         flags = GenerateFlags();
         if (staticTiles)
         {
@@ -58,14 +54,16 @@ public class ClassicMineField
         fog = GenerateFog();
     }
 
-    private int CountMines()
+    private static int CountMines(Tile[,] mineField)
     {
+        var rows = mineField.GetLength(0);
+        var columns = mineField.GetLength(1);
         var count = 0;
-        for (int row = 0; row < Rows; row++)
+        for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < Columns; column++)
+            for (int column = 0; column < columns; column++)
             {
-                if (mines[row, column] == Tile.Mine)
+                if (mineField[row, column] == Tile.Mine)
                 {
                     ++count;
                 }
@@ -149,7 +147,107 @@ public class ClassicMineField
         }
         RemoveOneTileIslands(mines);
         PopulateWithMines(mines, mineCount);
+        mines = CullInaccessibleRowsAndColumns(mines);
         return new ClassicMineField(mines, staticTiles);
+    }
+
+    private static Tile[,] CullInaccessibleRowsAndColumns(Tile[,] mines)
+    {
+        var rowBegin = GetAccessibleRowBegin(mines);
+        var rowEnd = GetAccessibleRowEnd(mines, rowBegin);
+        var columnBegin = GetAccessibleColumnBegin(mines);
+        var columnEnd = GetAccessibleColumnEnd(mines, columnBegin);
+        var newRows = rowEnd - rowBegin;
+        var newColumns = columnEnd - columnBegin;
+        var newMines = new Tile[newRows, newColumns];
+        for (var row = 0; row < newRows; ++row)
+        {
+            for (var column = 0; column < newColumns; ++column)
+            {
+                newMines[row, column] = mines[row + rowBegin, column + columnBegin];
+            }
+        }
+        return newMines;
+    }
+
+    private static int GetAccessibleRowBegin(Tile[,] mines)
+    {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        for (var row = 0; row < rows; row++)
+        {
+            for (var column = 0; column < columns; column++)
+            {
+                if (mines[row, column] != Tile.Inaccessible)
+                {
+                    return row;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static int GetAccessibleRowEnd(Tile[,] mines, int begin)
+    {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        for (var row = begin; row < rows; row++)
+        {
+            var hasAccessible = false;
+            for (var column = 0; column < columns; column++)
+            {
+                if (mines[row, column] != Tile.Inaccessible)
+                {
+                    hasAccessible = true;
+                    break;
+                }
+            }
+            if (!hasAccessible)
+            {
+                return row;
+            }
+        }
+        return rows;
+    }
+
+    private static int GetAccessibleColumnBegin(Tile[,] mines)
+    {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        for (var column = 0; column < columns; column++)
+        {
+            for (var row = 0; row < rows; row++)
+            {
+                if (mines[row, column] != Tile.Inaccessible)
+                {
+                    return column;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static int GetAccessibleColumnEnd(Tile[,] mines, int begin)
+    {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        for (var column = begin; column < columns; column++)
+        {
+            var hasAccessible = false;
+            for (var row = 0; row < rows; row++)
+            {
+                if (mines[row, column] != Tile.Inaccessible)
+                {
+                    hasAccessible = true;
+                    break;
+                }
+            }
+            if (!hasAccessible)
+            {
+                return column;
+            }
+        }
+        return columns;
     }
 
     private static void RemoveOneTileIslands(Tile[,] mineField)
@@ -195,9 +293,11 @@ public class ClassicMineField
 
     public void RepopulateWithMinesRandomly()
     {
-        for (int row = 0; row < Rows; row++)
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < Columns; column++)
+            for (int column = 0; column < columns; column++)
             {
                 if (mines[row, column] != Tile.Inaccessible)
                 {
@@ -234,10 +334,12 @@ public class ClassicMineField
 
     private bool[,] GenerateFog()
     {
-        var fog = new bool[Rows, Columns];
-        for (int row = 0; row < Rows; row++)
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        var fog = new bool[rows, columns];
+        for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < Columns; column++)
+            for (int column = 0; column < columns; column++)
             {
                 fog[row, column] = tiles[row, column] != Tile.Inaccessible;
             }
@@ -247,10 +349,12 @@ public class ClassicMineField
 
     private bool[,] GenerateFlags()
     {
-        var flags = new bool[Rows, Columns];
-        for (int row = 0; row < Rows; row++)
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        var flags = new bool[rows, columns];
+        for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < Columns; column++)
+            for (int column = 0; column < columns; column++)
             {
                 flags[row, column] = false;
             }
@@ -313,16 +417,18 @@ public class ClassicMineField
 
     private int FlagsInProximity(int row, int column)
     {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
         int flagsInProximity = 0;
         for (int x = row - 1; x <= row + 1; x++)
         {
-            if (x < 0 || x >= Rows)
+            if (x < 0 || x >= rows)
             {
                 continue;
             }
             for (int y = column - 1; y <= column + 1; y++)
             {
-                if (y < 0 || y >= Columns)
+                if (y < 0 || y >= columns)
                 {
                     continue;
                 }
@@ -337,16 +443,18 @@ public class ClassicMineField
 
     private bool ClearAround(int row, int column)
     {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
         var clearedSomething = false;
         for (int x = row - 1; x <= row + 1; x++)
         {
-            if (x < 0 || x >= Rows)
+            if (x < 0 || x >= rows)
             {
                 continue;
             }
             for (int y = column - 1; y <= column + 1; y++)
             {
-                if (y < 0 || y >= Columns)
+                if (y < 0 || y >= columns)
                 {
                     continue;
                 }
@@ -358,6 +466,8 @@ public class ClassicMineField
 
     private void ClearAutomatically(int initialRow, int initialColumn)
     {
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
         var positions = new Queue<(int, int)>();
         positions.Enqueue((initialRow, initialColumn));
         while (positions.Count != 0)
@@ -367,13 +477,13 @@ public class ClassicMineField
             {
                 for (int x = row - 1; x <= row + 1; x++)
                 {
-                    if (x < 0 || x >= Rows)
+                    if (x < 0 || x >= rows)
                     {
                         continue;
                     }
                     for (int y = column - 1; y <= column + 1; y++)
                     {
-                        if (y < 0 || y >= Columns)
+                        if (y < 0 || y >= columns)
                         {
                             continue;
                         }
@@ -421,9 +531,11 @@ public class ClassicMineField
 
     private bool IsMineHit()
     {
-        for (int row = 0; row < Rows; row++)
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < Columns; column++)
+            for (int column = 0; column < columns; column++)
             {
                 if (!fog[row, column] && tiles[row, column] == Tile.Mine)
                 {
@@ -436,9 +548,11 @@ public class ClassicMineField
 
     private bool AreAllNonMinesRevealed()
     {
-        for (int row = 0; row < Rows; row++)
+        var rows = mines.GetLength(0);
+        var columns = mines.GetLength(1);
+        for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < Columns; column++)
+            for (int column = 0; column < columns; column++)
             {
                 if (fog[row, column] && tiles[row, column] != Tile.Mine)
                 {
@@ -451,10 +565,17 @@ public class ClassicMineField
 
     public int RemainingMines()
     {
+        return mineCount - FlagCount(flags);
+    }
+
+    private static int FlagCount(bool[,] flags)
+    {
+        var rows = flags.GetLength(0);
+        var columns = flags.GetLength(1);
         var flagCount = 0;
-        for (int row = 0; row < Rows; row++)
+        for (int row = 0; row < rows; row++)
         {
-            for (int column = 0; column < Columns; column++)
+            for (int column = 0; column < columns; column++)
             {
                 if (flags[row, column])
                 {
@@ -462,6 +583,11 @@ public class ClassicMineField
                 }
             }
         }
-        return mineCount - flagCount;
+        return flagCount;
+    }
+
+    public (int, int) Length()
+    {
+        return (mines.GetLength(0), mines.GetLength(1));
     }
 }

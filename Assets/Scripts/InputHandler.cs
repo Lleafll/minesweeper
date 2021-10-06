@@ -103,8 +103,9 @@ public class InputHandler : MonoBehaviour
             isButtonDown = false;
         }
         var position = Camera.main.transform.position;
-        position.x = Mathf.Clamp(position.x, 0, mineFieldmanager.columns);
-        position.y = Mathf.Clamp(position.y, -mineFieldmanager.rows, 0);
+        var (rows, columns) = mineFieldmanager.Length();
+        position.x = Mathf.Clamp(position.x, 0, columns);
+        position.y = Mathf.Clamp(position.y, -rows, 0);
         Camera.main.transform.position = position;
     }
 

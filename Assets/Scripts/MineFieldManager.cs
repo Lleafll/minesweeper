@@ -7,8 +7,8 @@ using System;
 
 public class MineFieldManager : MonoBehaviour
 {
-    public int rows { get; private set; }
-    public int columns { get; private set; }
+    private int SettingsRows;
+    private int SettingsColumns;
     [SerializeField] private TileBase? defaultReference;
     [SerializeField] private TileBase? emptyReference;
     [SerializeField] private TileBase? mineReference;
@@ -43,8 +43,8 @@ public class MineFieldManager : MonoBehaviour
             throw new InvalidOperationException("settings not initialized");
         }
         Vibration.Init();
-        rows = settings.GetRowCount();
-        columns = settings.GetColumnCount();
+        SettingsRows = settings.GetRowCount();
+        SettingsColumns = settings.GetColumnCount();
         mineCount = settings.GetMineCount();
         rectangular = !settings.GetIrregularMineField();
         Reset();
@@ -53,9 +53,12 @@ public class MineFieldManager : MonoBehaviour
 
     private void CenterCamera()
     {
-        var gridWidth = columns;
-        var gridHeight = rows;
-        Camera.main.transform.Translate(new Vector3(gridWidth / 2 - 0.5f, -gridHeight / 2 + 0.5f, 0));
+        if (field == null)
+        {
+            throw new InvalidOperationException("field not initialized");
+        }
+        var (gridHeight, gridWidth) = field.Length();
+        Camera.main.transform.Translate(new Vector3(gridWidth / 2.0f - 0.5f, -gridHeight / 2.0f + 0.5f, 0));
     }
 
     public void Reset()
@@ -68,8 +71,8 @@ public class MineFieldManager : MonoBehaviour
         {
             throw new InvalidOperationException("remainingMinesText not initialized");
         }
-        mineCount = System.Math.Min(mineCount, rows * columns / 2);
-        field = ClassicMineField.GenerateRandom(rows, columns, mineCount, staticTiles, rectangular);
+        mineCount = Math.Min(mineCount, SettingsRows * SettingsColumns / 2);
+        field = ClassicMineField.GenerateRandom(SettingsRows, SettingsColumns, mineCount, staticTiles, rectangular);
         GenerateGrid();
         ZoomOut();
         gameOver = false;
@@ -97,6 +100,7 @@ public class MineFieldManager : MonoBehaviour
         {
             throw new InvalidOperationException("tileMap not initialized");
         }
+        var (rows, columns) = field.Length();
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
@@ -109,6 +113,11 @@ public class MineFieldManager : MonoBehaviour
 
     private void ZoomOut()
     {
+        if (field == null)
+        {
+            throw new InvalidOperationException("field not initialized");
+        }
+        var (rows, columns) = field.Length();
         Camera.main.orthographicSize = rows * 0.5F * 1.1F;
         var screenAspect = (float)Screen.width / (float)Screen.height;
         var camHalfHeight = Camera.main.orthographicSize;
@@ -173,6 +182,7 @@ public class MineFieldManager : MonoBehaviour
             return;
         }
         var (row, column) = GetClickedRowAndColumn();
+        var (rows, columns) = field.Length();
         if (row < 0 || column < 0 || row >= rows || column >= columns)
         {
             return;
@@ -251,5 +261,14 @@ public class MineFieldManager : MonoBehaviour
         var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
         gameOverText.enabled = true;
         tryAgainButton.gameObject.SetActive(true);
+    }
+
+    public (int, int) Length()
+    {
+        if (field == null)
+        {
+            throw new InvalidOperationException("field not initialized");
+        }
+        return field.Length();
     }
 }
