@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSettings : MonoBehaviour
@@ -8,10 +6,12 @@ public class PlayerSettings : MonoBehaviour
     private const int defaultRowCount = 15;
     private const int defaultColumnCount = 10;
     private const int defaultIrregularMineField = 0;
+    private const int defaultIrregularSize = 25;
     private const string mineCountKey = "mineCount";
     private const string rowCountKey = "rowCount";
     private const string columnCountKey = "columnCount";
     private const string irregularMineFieldKey = "irregularMineField";
+    private const string irregularSizeKey = "irregularSize";
 
     public void SetMineCount(string mineCount)
     {
@@ -51,5 +51,15 @@ public class PlayerSettings : MonoBehaviour
     public bool GetIrregularMineField()
     {
         return PlayerPrefs.GetInt(irregularMineFieldKey, defaultIrregularMineField) == 1;
+    }
+
+    public void SetIrregularSize(string irregularSize)
+    {
+        PlayerPrefs.SetInt(irregularSizeKey, int.Parse(irregularSize));
+    }
+
+    public int GetIrregularSize()
+    {
+        return PlayerPrefs.GetInt(irregularSizeKey, defaultIrregularSize);
     }
 }

@@ -9,6 +9,7 @@ public class MineFieldManager : MonoBehaviour
 {
     private int SettingsRows;
     private int SettingsColumns;
+    private int settingIrregularSize;
     [SerializeField] private TileBase? defaultReference;
     [SerializeField] private TileBase? emptyReference;
     [SerializeField] private TileBase? mineReference;
@@ -47,6 +48,7 @@ public class MineFieldManager : MonoBehaviour
         SettingsColumns = settings.GetColumnCount();
         mineCount = settings.GetMineCount();
         rectangular = !settings.GetIrregularMineField();
+        settingIrregularSize = settings.GetIrregularSize();
         Reset();
     }
 
@@ -71,7 +73,14 @@ public class MineFieldManager : MonoBehaviour
             throw new InvalidOperationException("remainingMinesText not initialized");
         }
         mineCount = Math.Min(mineCount, SettingsRows * SettingsColumns / 2);
-        field = ClassicMineField.GenerateRandom(SettingsRows, SettingsColumns, mineCount, staticTiles, rectangular);
+        if (rectangular)
+        {
+            field = ClassicMineField.GenerateRandom(SettingsRows, SettingsColumns, mineCount, staticTiles, true);
+        }
+        else
+        {
+            field = ClassicMineField.GenerateRandom(settingIrregularSize, settingIrregularSize, mineCount, staticTiles, false);
+        }
         GenerateGrid();
         ZoomOut();
         CenterCamera();

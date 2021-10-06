@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +8,7 @@ public class LoadPlayerSettings : MonoBehaviour
     [SerializeField] private InputField rows;
     [SerializeField] private InputField columns;
     [SerializeField] private Toggle irregularMineField;
+    [SerializeField] private InputField irregularSize;
 
     // Start is called before the first frame update
     void Start()
@@ -18,5 +17,6 @@ public class LoadPlayerSettings : MonoBehaviour
         rows.text = settings.GetRowCount().ToString();
         columns.text = settings.GetColumnCount().ToString();
         irregularMineField.isOn = settings.GetIrregularMineField();
+        irregularSize.text = settings.GetIrregularSize().ToString();
     }
 }
