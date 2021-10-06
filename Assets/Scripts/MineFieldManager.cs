@@ -72,13 +72,14 @@ public class MineFieldManager : MonoBehaviour
         {
             throw new InvalidOperationException("remainingMinesText not initialized");
         }
-        mineCount = Math.Min(mineCount, SettingsRows * SettingsColumns / 2);
         if (rectangular)
         {
+            mineCount = Math.Min(mineCount, SettingsRows * SettingsColumns / 2);
             field = ClassicMineField.GenerateRandom(SettingsRows, SettingsColumns, mineCount, staticTiles, true);
         }
         else
         {
+            mineCount = Math.Min(mineCount, settingIrregularSize * settingIrregularSize / 2);
             field = ClassicMineField.GenerateRandom(settingIrregularSize, settingIrregularSize, mineCount, staticTiles, false);
         }
         GenerateGrid();
