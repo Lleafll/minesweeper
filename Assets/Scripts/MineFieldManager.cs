@@ -48,7 +48,6 @@ public class MineFieldManager : MonoBehaviour
         mineCount = settings.GetMineCount();
         rectangular = !settings.GetIrregularMineField();
         Reset();
-        CenterCamera();
     }
 
     private void CenterCamera()
@@ -58,7 +57,7 @@ public class MineFieldManager : MonoBehaviour
             throw new InvalidOperationException("field not initialized");
         }
         var (gridHeight, gridWidth) = field.Length();
-        Camera.main.transform.Translate(new Vector3(gridWidth / 2.0f - 0.5f, -gridHeight / 2.0f + 0.5f, 0));
+        Camera.main.transform.position = new Vector3(gridWidth / 2.0f - 0.5f, -gridHeight / 2.0f + 0.5f, Camera.main.transform.position.z);
     }
 
     public void Reset()
@@ -75,6 +74,7 @@ public class MineFieldManager : MonoBehaviour
         field = ClassicMineField.GenerateRandom(SettingsRows, SettingsColumns, mineCount, staticTiles, rectangular);
         GenerateGrid();
         ZoomOut();
+        CenterCamera();
         gameOver = false;
         var gameOverText = GameObject.Find("GameOverScreen").GetComponent<Text>();
         gameOverText.enabled = false;
