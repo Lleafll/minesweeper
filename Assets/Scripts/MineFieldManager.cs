@@ -164,6 +164,10 @@ public class MineFieldManager : MonoBehaviour
         {
             throw new InvalidOperationException("field not initialized");
         }
+        if (remainingMinesText == null)
+        {
+            throw new InvalidOperationException("remainingMinesText not initialized");
+        }
         if (gameOver)
         {
             return;
@@ -194,6 +198,7 @@ public class MineFieldManager : MonoBehaviour
         if (clicked)
         {
             Vibration.Vibrate(vibrationDurationInMs);
+            remainingMinesText.text = field.RemainingMines().ToString();
         }
         GenerateGrid();
         gameOver = CheckIfGameOver();
