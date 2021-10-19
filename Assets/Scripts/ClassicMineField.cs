@@ -324,6 +324,10 @@ public class ClassicMineField
                 mines[row, column] = Tile.Mine;
                 --mineCount;
             }
+            else if (mines[row, column] == Tile.Inaccessible)
+            {
+                --mineCount;
+            }
         }
     }
 

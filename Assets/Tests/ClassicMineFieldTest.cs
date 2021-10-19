@@ -198,4 +198,11 @@ public class ClassicMineFieldTest
         Assert.AreEqual(Tile.Fog, mineField.TileAt(1, 0));
         Assert.AreEqual(Tile.Fog, mineField.TileAt(1, 1));
     }
+
+    [Test]
+    public void TestGenerateRandomWithIrregularShapeAndTooManyMinesDoesNotResultInInfiniteLoop()
+    {
+        var mineField = ClassicMineField.GenerateRandom(2, 2, 100, true, false);
+        Assert.IsTrue(true);
+    }
 }
